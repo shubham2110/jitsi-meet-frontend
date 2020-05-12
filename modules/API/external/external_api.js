@@ -43,7 +43,11 @@ const commands = {
     toggleFilmStrip: 'toggle-film-strip',
     toggleShareScreen: 'toggle-share-screen',
     toggleTileView: 'toggle-tile-view',
-    toggleVideo: 'toggle-video'
+    toggleVideo: 'toggle-video',
+    sendauthid: 'sendauthid',
+    sendauthpass: 'sendauthpass',
+    setstoragekeys: 'setstoragekeys',
+    sendsessionid: 'sendsessionid'
 };
 
 /**

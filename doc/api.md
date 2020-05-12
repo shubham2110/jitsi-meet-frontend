@@ -278,6 +278,22 @@ api.executeCommand('receiverParticipantId', 'text');
 * **setVideoQuality** - Sets the send and receive video resolution. This command requires one argument - the resolution height to be set.
 ```javascript
 api.executeCommand('setVideoQuality', 720);
+
+* **authusername** - Sending username for windows.localstorge for default login in the server.
+```javascript
+api.executeCommand('sendauthid','your id');
+```
+
+* **authpassword** - Sending Password for windows.localstorge for default login in the server.
+```javascript
+api.executeCommand('sendauthpass','your password');
+```
+setstoragekeys
+
+* **storagekeys** - Setting storage keys from client
+```javascript
+api.executeCommand('setstoragekeys','{"key": "value", "key2":"value2"}');
+
 ```
 
 You can also execute multiple commands using the `executeCommands` method:

@@ -67,6 +67,15 @@ let videoAvailable = true;
  */
 function initCommands() {
     commands = {
+        'sendauthid': authid => {
+            window.localStorage.setItem('xmpp_username_override', authid);
+        },
+        'sendauthpass': authpass => {
+            window.localStorage.setItem('xmpp_password_override', authpass);
+        },
+        'sendsessionid': sessionid => {
+            window.localStorage.setItem('sessionId', sessionid);
+        },
         'display-name': displayName => {
             sendAnalytics(createApiEvent('display.name.changed'));
             APP.conference.changeLocalDisplayName(displayName);
