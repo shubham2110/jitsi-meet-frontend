@@ -288,11 +288,10 @@ api.executeCommand('sendauthid','your id');
 ```javascript
 api.executeCommand('sendauthpass','your password');
 ```
-setstoragekeys
 
-* **storagekeys** - Setting storage keys from client
+* **sendsessionid** - Setting sessionID in browser
 ```javascript
-api.executeCommand('setstoragekeys','{"key": "value", "key2":"value2"}');
+api.executeCommand('sendsessionid','JJHSJS786832h872s');
 
 ```
 
