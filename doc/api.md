@@ -644,3 +644,4 @@ NOTE: It's a good practice to remove the conference before the page is unloaded.
 [config.js]: https://github.com/jitsi/jitsi-meet/blob/master/config.js
 [interface_config.js]: https://github.com/jitsi/jitsi-meet/blob/master/interface_config.js
 [EventEmitter]: https://nodejs.org/api/events.html
+This document has been moved [here](https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-iframe).
