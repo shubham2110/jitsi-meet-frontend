@@ -18,6 +18,7 @@ import {
     P2P_STATUS_CHANGED,
     SET_DESKTOP_SHARING_ENABLED,
     SET_FOLLOW_ME,
+    SET_FORCED_MUTE,
     SET_MAX_RECEIVER_VIDEO_QUALITY,
     SET_PASSWORD,
     SET_PENDING_SUBJECT_CHANGE,
@@ -85,6 +86,9 @@ ReducerRegistry.register(
 
         case SET_FOLLOW_ME:
             return set(state, 'followMeEnabled', action.enabled);
+
+        case SET_FORCED_MUTE:
+            return set(state, 'forcedMuteEnabled', action.enabled);
 
         case SET_LOCATION_URL:
             return set(state, 'room', undefined);
