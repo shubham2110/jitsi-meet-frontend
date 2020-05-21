@@ -6,6 +6,7 @@ import { BaseApp } from '../../base/app';
 import '../../base/lastn'; // Register lastN middleware
 import { toURLString } from '../../base/util';
 import '../../follow-me';
+import '../../forced-mute';
 import { OverlayContainer } from '../../overlay';
 import '../../rejoin'; // Enable rejoin analytics
 import { appNavigate } from '../actions';

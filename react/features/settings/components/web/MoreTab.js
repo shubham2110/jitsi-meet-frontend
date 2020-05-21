@@ -34,6 +34,16 @@ export type Props = {
     followMeEnabled: boolean,
 
     /**
+     * Whether or not forced mute is currently active (enabled by some other participant).
+     */
+    forcedMuteActive: boolean,
+
+    /**
+     * Whether or not the user has selected the forced mute feature to be enabled.
+     */
+    forcedMuteEnabled: boolean,
+
+    /**
      * All available languages to display in the language select dropdown.
      */
     languages: Array<string>,
@@ -196,6 +206,8 @@ class MoreTab extends AbstractDialogTab<Props, State> {
         const {
             followMeActive,
             followMeEnabled,
+            forcedMuteActive,
+            forcedMuteEnabled,
             startAudioMuted,
             startVideoMuted,
             t
@@ -235,6 +247,16 @@ class MoreTab extends AbstractDialogTab<Props, State> {
                     onChange = {
                         ({ target: { checked } }) =>
                             super._onChange({ followMeEnabled: checked })
+                    } />
+                <Checkbox
+                    isChecked = { forcedMuteEnabled && !forcedMuteActive }
+                    isDisabled = { forcedMuteActive }
+                    label = { t('settings.forcedMute') }
+                    name = 'forced-mute'
+                    // eslint-disable-next-line react/jsx-no-bind
+                    onChange = {
+                        ({ target: { checked } }) =>
+                            super._onChange({ forcedMuteEnabled: checked })
                     } />
             </div>
         );

@@ -197,6 +197,7 @@ function _mapStateToProps(state) {
                     ...newProps,
                     currentLanguage: tabState.currentLanguage,
                     followMeEnabled: tabState.followMeEnabled,
+                    forcedMuteEnabled: tabState.forcedMuteEnabled,
                     startAudioMuted: tabState.startAudioMuted,
                     startVideoMuted: tabState.startVideoMuted
                 };

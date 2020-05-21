@@ -164,6 +164,17 @@ export const SET_DESKTOP_SHARING_ENABLED
 export const SET_FOLLOW_ME = 'SET_FOLLOW_ME';
 
 /**
+ * The type of (redux) action which updates the current known status of the
+ * Forced Mute feature.
+ *
+ * {
+ *     type: SET_FORCED_MUTE,
+ *     enabled: boolean
+ * }
+ */
+export const SET_FORCED_MUTE = 'SET_FORCED_MUTE';
+
+/**
  * The type of (redux) action which sets the maximum video height that should be
  * received from remote participants, even if the user prefers a larger video
  * height.
