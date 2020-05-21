@@ -204,6 +204,7 @@
         "goToStore": "Go to the webstore",
         "gracefulShutdown": "Our service is currently down for maintenance. Please try again later.",
         "IamHost": "I am the host",
+        "IamHost2": "Are you host ? Login using portal",
         "incorrectRoomLockPassword": "Incorrect password",
         "incorrectPassword": "Incorrect username or password",
         "inlineInstallationMsg": "You need to install our desktop sharing extension.",

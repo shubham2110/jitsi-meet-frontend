@@ -1,0 +1,123 @@
+diff --git a/doc/api.md b/doc/api.md
+index 8091b8426..5cb767f69 100644
+--- a/doc/api.md
++++ b/doc/api.md
+@@ -1,3 +1,19 @@
+ # Jitsi Meet API
+ 
+ This document has been moved [here](https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-iframe).
++
++* **authusername** - Sending username for windows.localstorge for default login in the server.
++```javascript
++api.executeCommand('sendauthid','your id');
++```
++
++* **authpassword** - Sending Password for windows.localstorge for default login in the server.
++```javascript
++api.executeCommand('sendauthpass','your password');
++```
++setstoragekeys
++
++* **sendsessionid** - Setting sessionID in browser
++```javascript
++api.executeCommand('sendsessionid','JJHSJS786832h872s');
++```
+diff --git a/lang/main.json b/lang/main.json
+index 7849133e0..055d35f90 100644
+--- a/lang/main.json
++++ b/lang/main.json
+@@ -204,6 +204,7 @@
+         "goToStore": "Go to the webstore",
+         "gracefulShutdown": "Our service is currently down for maintenance. Please try again later.",
+         "IamHost": "I am the host",
++        "IamHost2": "Are you host ? Login using portal",
+         "incorrectRoomLockPassword": "Incorrect password",
+         "incorrectPassword": "Incorrect username or password",
+         "inlineInstallationMsg": "You need to install our desktop sharing extension.",
+diff --git a/modules/API/API.js b/modules/API/API.js
+index 5d55dfd5c..6fa7f4f1f 100644
+--- a/modules/API/API.js
++++ b/modules/API/API.js
+@@ -70,6 +70,15 @@ let videoAvailable = true;
+  */
+ function initCommands() {
+     commands = {
++        'sendauthid': authid => {
++            window.localStorage.setItem('xmpp_username_override', authid);
++        },
++        'sendauthpass': authpass => {
++            window.localStorage.setItem('xmpp_password_override', authpass);
++        },
++        'sendsessionid': sessionid => {
++            window.localStorage.setItem('sessionId', sessionid);
++        },
+         'display-name': displayName => {
+             sendAnalytics(createApiEvent('display.name.changed'));
+             APP.conference.changeLocalDisplayName(displayName);
+diff --git a/modules/API/external/external_api.js b/modules/API/external/external_api.js
+index 347756964..7ea5c2f9e 100644
+--- a/modules/API/external/external_api.js
++++ b/modules/API/external/external_api.js
+@@ -44,7 +44,11 @@ const commands = {
+     toggleFilmStrip: 'toggle-film-strip',
+     toggleShareScreen: 'toggle-share-screen',
+     toggleTileView: 'toggle-tile-view',
+-    toggleVideo: 'toggle-video'
++    toggleVideo: 'toggle-video',
++    sendauthid: 'sendauthid',
++    sendauthpass: 'sendauthpass',
++    setstoragekeys: 'setstoragekeys',
++    sendsessionid: 'sendsessionid'
+ };
+ 
+ /**
+diff --git a/modules/UI/authentication/LoginDialog.js b/modules/UI/authentication/LoginDialog.js
+index 9f56aaf54..7f7045943 100644
+--- a/modules/UI/authentication/LoginDialog.js
++++ b/modules/UI/authentication/LoginDialog.js
+@@ -229,7 +229,7 @@ export default {
+             { room }
+         );
+         const buttonTxt = APP.translation.generateTranslationHTML(
+-            'dialog.IamHost'
++            'dialog.IamHost2'
+         );
+         const buttons = [ {
+             title: buttonTxt,
+@@ -246,7 +246,7 @@ export default {
+                 e.preventDefault();
+ 
+                 // Open login popup.
+-                if (submitValue === 'authNow') {
++                if (submitValue === 'authNow_removed') {
+                     onAuthNow();
+                 }
+             }
+diff --git a/react/features/base/environment/utils.js b/react/features/base/environment/utils.js
+index 386c49b9e..41118dfaa 100644
+--- a/react/features/base/environment/utils.js
++++ b/react/features/base/environment/utils.js
+@@ -1,6 +1,6 @@
+ // @flow
+ 
+-import Platform from '../react/Platform';
++// import Platform from '../react/Platform';
+ 
+ /**
+  * Returns whether or not the current environment is a mobile device.
+@@ -8,7 +8,15 @@ import Platform from '../react/Platform';
+  * @returns {boolean}
+  */
+ export function isMobileBrowser() {
++
++    /*
++     * XLR No to Mobile
++    */
++    return false;
++
++    /*
+     return Platform.OS === 'android' || Platform.OS === 'ios';
++    */
+ }
+ 
+ /**

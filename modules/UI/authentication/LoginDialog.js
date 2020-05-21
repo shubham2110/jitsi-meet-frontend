@@ -229,7 +229,7 @@ export default {
             { room }
         );
         const buttonTxt = APP.translation.generateTranslationHTML(
-            'dialog.IamHost'
+            'dialog.IamHost2'
         );
         const buttons = [ {
             title: buttonTxt,
@@ -246,7 +246,7 @@ export default {
                 e.preventDefault();
 
                 // Open login popup.
-                if (submitValue === 'authNow') {
+                if (submitValue === 'authNow_removed') {
                     onAuthNow();
                 }
             }
