@@ -101,7 +101,7 @@ $sidebarWidth: 375px;
  * Misc.
  */
 $borderRadius: 4px;
-$defaultWatermarkLink: '../images/watermark.png';
+$defaultWatermarkLink: 'https://www.iocl.com/images/site/ico_new_logo-final.gif';
 $popoverMenuPadding: 13px;
 $happySoftwareBackground: transparent;
 $desktopAppDragBarHeight: 25px;
@@ -168,10 +168,10 @@ $watermarkHeight: 74px;
 /**
  * Welcome page variables.
  */
-$welcomePageDescriptionColor: #fff;
+$welcomePageDescriptionColor: #02164F;
 $welcomePageFontFamily: inherit;
-$welcomePageBackground: linear-gradient(-90deg, #1251AE 0%, #0074FF 50%, #1251AE 100%);
-$welcomePageTitleColor: #fff;
+$welcomePageBackground: linear-gradient(to right, #eee7f3, #faaca8);
+$welcomePageTitleColor: #02164F;
 
 $welcomePageHeaderBackground: none;
 $welcomePageHeaderBackgroundSmall: none;
