@@ -100,6 +100,24 @@ function _fixURIStringScheme(uri: string) {
 }
 
 /**
+ * Converts a path to a backend-safe format, by splitting the path '/' processing each part.
+ * Properly lowercased and url encoded.
+ *
+ * @param {string?} path - The path to convert.
+ * @returns {string?}
+ */
+export function getBackendSafePath(path: ?string): ?string {
+    if (!path) {
+        return path;
+    }
+
+    return path
+        .split('/')
+        .map(getBackendSafeRoomName)
+        .join('/');
+}
+
+/**
  * Converts a room name to a backend-safe format. Properly lowercased and url encoded.
  *
  * @param {string?} room - The room name to convert.
@@ -572,4 +590,14 @@ export function addHashParamsToURL(url: URL, hashParamsToAdd: Object = {}) {
     }
 
     return url;
+}
+
+/**
+ * Returns the decoded URI.
+ *
+ * @param {string} uri - The URI to decode.
+ * @returns {string}
+ */
+export function getDecodedURI(uri: string) {
+    return decodeURI(uri.replace(/^https?:\/\//i, ''));
 }

@@ -7,7 +7,10 @@ import { Icon, IconInviteMore } from '../../../base/icons';
 import { getParticipantCount } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 import { beginAddPeople } from '../../../invite';
-import { isToolboxVisible } from '../../../toolbox';
+import { isButtonEnabled, isToolboxVisible } from '../../../toolbox/functions.web';
+import { shouldDisplayTileView } from '../../../video-layout/functions';
+
+declare var interfaceConfig: Object;
 
 type Props = {
 
@@ -56,7 +59,7 @@ function InviteMore({
                     className = 'invite-more-button'
                     onClick = { onClick }>
                     <Icon src = { IconInviteMore } />
-                    <div className = 'invite-more-text'>
+                    <div className = 'invite-more-button-text'>
                         {t('addPeople.inviteMorePrompt')}
                     </div>
                 </div>
@@ -74,10 +77,12 @@ function InviteMore({
  */
 function mapStateToProps(state) {
     const participantCount = getParticipantCount(state);
+    const isAlone = participantCount === 1;
+    const hide = interfaceConfig.HIDE_INVITE_MORE_HEADER;
 
     return {
-        _tileViewEnabled: state['features/video-layout'].tileViewEnabled,
-        _visible: isToolboxVisible(state) && participantCount === 1
+        _tileViewEnabled: shouldDisplayTileView(state),
+        _visible: isToolboxVisible(state) && isButtonEnabled('invite') && isAlone && !hide
     };
 }
 

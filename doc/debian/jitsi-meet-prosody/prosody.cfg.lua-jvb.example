@@ -6,8 +6,8 @@ muc_mapper_domain_base = "jitmeet.example.com";
 turncredentials_secret = "__turnSecret__";
 
 turncredentials = {
-  { type = "stun", host = "jitmeet.example.com", port = "4446" },
-  { type = "turn", host = "jitmeet.example.com", port = "4446", transport = "udp" },
+  { type = "stun", host = "jitmeet.example.com", port = "3478" },
+  { type = "turn", host = "jitmeet.example.com", port = "3478", transport = "udp" },
   { type = "turns", host = "jitmeet.example.com", port = "443", transport = "tcp" }
 };
 
@@ -46,8 +46,12 @@ VirtualHost "jitmeet.example.com"
             "speakerstats";
             "turncredentials";
             "conference_duration";
+            "muc_lobby_rooms";
         }
         c2s_require_encryption = false
+        lobby_muc = "lobby.jitmeet.example.com"
+        main_muc = "conference.jitmeet.example.com"
+        -- muc_lobby_whitelist = { "recorder.jitmeet.example.com" } -- Here we can whitelist jibri to enter lobby enabled rooms
 
 Component "conference.jitmeet.example.com" "muc"
     storage = "memory"
@@ -81,3 +85,9 @@ Component "speakerstats.jitmeet.example.com" "speakerstats_component"
 
 Component "conferenceduration.jitmeet.example.com" "conference_duration_component"
     muc_component = "conference.jitmeet.example.com"
+
+Component "lobby.jitmeet.example.com" "muc"
+    storage = "memory"
+    restrict_room_creation = true
+    muc_room_locking = false
+    muc_room_default_public_jids = true

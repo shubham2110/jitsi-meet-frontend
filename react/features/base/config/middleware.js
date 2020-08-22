@@ -1,13 +1,15 @@
 // @flow
 
-import { jitsiLocalStorage } from 'js-utils';
+import { jitsiLocalStorage } from '@jitsi/js-utils';
 
 import { APP_WILL_MOUNT } from '../app';
+import { getFeatureFlag } from '../flags/functions';
 import { addKnownDomains } from '../known-domains';
 import { MiddlewareRegistry } from '../redux';
 import { parseURIString } from '../util';
 
-import { _UPDATE_CONFIG, SET_CONFIG } from './actionTypes';
+import { SET_CONFIG } from './actionTypes';
+import { updateConfig } from './actions';
 import { _CONFIG_STORE_PREFIX } from './constants';
 
 /**
@@ -107,10 +109,13 @@ function _setConfig({ dispatch, getState }, next, action) {
         config.p2p = { enabled: !settings.disableP2P };
     }
 
-    dispatch({
-        type: _UPDATE_CONFIG,
-        config
-    });
+    const resolutionFlag = getFeatureFlag(state, 'resolution');
+
+    if (typeof resolutionFlag !== 'undefined') {
+        config.resolution = resolutionFlag;
+    }
+
+    dispatch(updateConfig(config));
 
     // FIXME On Web we rely on the global 'config' variable which gets altered
     // multiple times, before it makes it to the reducer. At some point it may
