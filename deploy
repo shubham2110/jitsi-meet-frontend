@@ -16,3 +16,4 @@ cp -r lang					/usr/share/jitsi-meet/
 cp -r connection_optimization	/usr/share/jitsi-meet/
 cp -r resources/robots.txt	/usr/share/jitsi-meet/
 cp -r resources/*.sh			/usr/share/jitsi-meet/scripts/
+cp -r resources/prosody-plugins/           /usr/share/jitsi-meet/
