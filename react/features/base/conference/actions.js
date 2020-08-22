@@ -45,6 +45,7 @@ import {
     SEND_TONES,
     SET_DESKTOP_SHARING_ENABLED,
     SET_FOLLOW_ME,
+    SET_FORCED_MUTE,
     SET_MAX_RECEIVER_VIDEO_QUALITY,
     SET_PASSWORD,
     SET_PASSWORD_FAILED,
@@ -611,6 +612,22 @@ export function setDesktopSharingEnabled(desktopSharingEnabled: boolean) {
 export function setFollowMe(enabled: boolean) {
     return {
         type: SET_FOLLOW_ME,
+        enabled
+    };
+}
+
+/**
+ * Enables or disables the Forced Mute feature.
+ *
+ * @param {boolean} enabled - Whether or not Forced Mute should be enabled.
+ * @returns {{
+ *     type: SET_FORCED_MUTE,
+ *     enabled: boolean
+ * }}
+ */
+export function setForcedMute(enabled: boolean) {
+    return {
+        type: SET_FORCED_MUTE,
         enabled
     };
 }

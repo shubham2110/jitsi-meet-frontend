@@ -10,6 +10,7 @@ import {
 import { toState } from '../base/redux';
 import { parseStandardURIString } from '../base/util';
 import { isFollowMeActive } from '../follow-me';
+import { isForcedMuteActive } from '../forced-mute';
 
 declare var interfaceConfig: Object;
 
@@ -99,10 +100,12 @@ export function getMoreTabProps(stateful: Object | Function) {
     const {
         conference,
         followMeEnabled,
+        forcedMuteEnabled,
         startAudioMutedPolicy,
         startVideoMutedPolicy
     } = state['features/base/conference'];
     const followMeActive = isFollowMeActive(state);
+    const forcedMuteActive = isForcedMuteActive(state);
     const configuredTabs = interfaceConfig.SETTINGS_SECTIONS || [];
 
     // The settings sections to display.
@@ -114,7 +117,9 @@ export function getMoreTabProps(stateful: Object | Function) {
     return {
         currentLanguage: language,
         followMeActive: Boolean(conference && followMeActive),
+        forcedMuteActive: Boolean(conference && forcedMuteActive),
         followMeEnabled: Boolean(conference && followMeEnabled),
+        forcedMuteEnabled: Boolean(conference && forcedMuteEnabled),
         languages: LANGUAGES,
         showLanguageSettings: configuredTabs.includes('language'),
         showModeratorSettings,
