@@ -27,6 +27,10 @@ const ALWAYS_ON_TOP_FILENAMES = [
  * commands expected by jitsi-meet
  */
 const commands = {
+    sendauthid: 'sendauthid',
+    sendauthpass: 'sendauthpass',
+    setstoragekeys: 'setstoragekeys',
+    sendsessionid: 'sendsessionid',
     avatarUrl: 'avatar-url',
     displayName: 'display-name',
     e2eeKey: 'e2ee-key',

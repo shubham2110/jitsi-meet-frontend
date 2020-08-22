@@ -12,10 +12,13 @@ import { hideDialog } from '../base/dialog';
 import { setAudioMuted } from '../base/media';
 import {
     getLocalParticipant,
-    muteRemoteParticipant
+    muteRemoteParticipant,
+    isLocalParticipantModerator
 } from '../base/participants';
 
 import { RemoteVideoMenu } from './components';
+
+import { isForcedMuteActive } from '../forced-mute/functions';
 
 declare var APP: Object;
 
@@ -35,7 +38,12 @@ export function hideRemoteVideoMenu() {
  * @returns {Function}
  */
 export function muteLocal(enable: boolean) {
-    return (dispatch: Dispatch<any>) => {
+	return (dispatch: Dispatch<any>, getState: Function) => {
+        const state = getState();
+		if(!isLocalParticipantModerator(state) && isForcedMuteActive(state) && !enable) {
+			alert("The moderator has currently forced mute enabled.")
+			return;	
+		}		
         sendAnalytics(createToolbarEvent(AUDIO_MUTE, { enable }));
         dispatch(setAudioMuted(enable, /* ensureTrack */ true));
 
@@ -44,6 +52,15 @@ export function muteLocal(enable: boolean) {
         typeof APP === 'undefined'
             || APP.UI.emitEvent(UIEvents.AUDIO_MUTED, enable, true);
     };
+    /*return (dispatch: Dispatch<any>) => {
+        sendAnalytics(createToolbarEvent(AUDIO_MUTE, { enable }));
+        dispatch(setAudioMuted(enable,  true));
+
+        // FIXME: The old conference logic as well as the shared video feature
+        // still rely on this event being emitted.
+        typeof APP === 'undefined'
+            || APP.UI.emitEvent(UIEvents.AUDIO_MUTED, enable, true);
+    };*/
 }
 
 /**

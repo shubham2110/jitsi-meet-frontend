@@ -1,6 +1,6 @@
 // @flow
 
-import { setFollowMe, setStartMutedPolicy } from '../base/conference';
+import { setForcedMute, setFollowMe, setStartMutedPolicy } from '../base/conference';
 import { openDialog } from '../base/dialog';
 import { i18next } from '../base/i18n';
 import { updateSettings } from '../base/settings';
@@ -65,6 +65,11 @@ export function submitMoreTab(newState: Object): Function {
         if (newState.followMeEnabled !== currentState.followMeEnabled) {
             dispatch(setFollowMe(newState.followMeEnabled));
         }
+		
+		if (newState.forcedMuteEnabled !== currentState.forcedMuteEnabled) {
+            dispatch(setForcedMute(newState.forcedMuteEnabled));
+        }
+
 
         const showPrejoinPage = newState.showPrejoinPage;
 

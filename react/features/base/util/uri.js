@@ -599,5 +599,6 @@ export function addHashParamsToURL(url: URL, hashParamsToAdd: Object = {}) {
  * @returns {string}
  */
 export function getDecodedURI(uri: string) {
-    return decodeURI(uri.replace(/^https?:\/\//i, ''));
+
+    return decodeURI(uri.replace(/^https?:\/\//i, '').replace('vc.indianoil.in\/','vc.indianoil.in\/webjoin\/').replace('ioc.instantconnect.in\/','ioc.instantconnect.in\/webjoin\/'));
 }
