@@ -8,7 +8,10 @@ import Platform from '../react/Platform';
  * @returns {boolean}
  */
 export function isMobileBrowser() {
+    return false;
+	/*
     return Platform.OS === 'android' || Platform.OS === 'ios';
+    */
 }
 
 /**
