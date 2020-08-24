@@ -300,6 +300,7 @@ function showXmppPasswordPrompt(roomName, connect) {
                 });
             }
         );
+      }
     });
   }
 }
