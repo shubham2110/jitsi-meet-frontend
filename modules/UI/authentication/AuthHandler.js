@@ -301,9 +301,9 @@ function showXmppPasswordPrompt(roomName, connect) {
             }
         );
       }
-    });
-  }
+  });
 }
+
 
 /**
  * Show Authentication Dialog and try to connect with new credentials.
