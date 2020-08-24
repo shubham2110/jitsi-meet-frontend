@@ -246,9 +246,8 @@ export default {
                 e.preventDefault();
 
                 // Open login popup.
-                if (submitValue === 'authNow_removed') {
-                    Linking.openURL('http://vc.indianoil.in');
-		    onAuthNow();
+                if (submitValue === 'authNow') {
+                  		    onAuthNow();
                 }
             }
         );

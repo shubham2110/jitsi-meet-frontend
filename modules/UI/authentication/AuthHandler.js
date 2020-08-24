@@ -267,6 +267,24 @@ function closeAuth() {
  */
 function showXmppPasswordPrompt(roomName, connect) {
     return new Promise((resolve, reject) => {
+      let username =   window.localStorage.getItem('xmpp_username_override1');
+      let pass = window.localStorage.getItem('xmpp_password_override1');
+              if(username&&pass){
+
+                    connect(username, pass, roomName).then(connection => {
+                        authDialog.close();
+                        resolve(connection);
+                    }, err => {
+                        if (err === JitsiConnectionErrors.PASSWORD_REQUIRED) {
+                            authDialog.displayError(err);
+                        } else {
+                            authDialog.close();
+                            reject(err);
+                        }
+                    });
+
+      }
+      else {
         const authDialog = LoginDialog.showAuthDialog(
             (id, password) => {
                 connect(id, password, roomName).then(connection => {
@@ -283,6 +301,7 @@ function showXmppPasswordPrompt(roomName, connect) {
             }
         );
     });
+  }
 }
 
 /**
