@@ -205,11 +205,16 @@ function doXmppAuth(room, lockPassword) {
  * @param {string} [lockPassword] password to use if the conference is locked
  */
 function authenticate(room, lockPassword) {
+   if( windows.localStorage.getItem('xmpp_username_override1') && windows.localStorage.getItem('xmpp_password_override1') ) {
+     doXmppAuth(room, lockPassword);
+   }
+   else{
     if (isTokenAuthEnabled || room.isExternalAuthEnabled()) {
         doExternalAuth(room, lockPassword);
     } else {
         doXmppAuth(room, lockPassword);
     }
+  }
 }
 
 /**
@@ -269,16 +274,24 @@ function showXmppPasswordPrompt(roomName, connect) {
     return new Promise((resolve, reject) => {
       let username =   window.localStorage.getItem('xmpp_username_override1');
       let pass = window.localStorage.getItem('xmpp_password_override1');
-              if(username&&pass){
+      console.log('OurSession: ID', id, '  Session:Password', password);
+      if(username&&pass){
+        console.log('OurSession: ID inside', id, '  Session:Password inside', password);
 
                     connect(username, pass, roomName).then(connection => {
-                        authDialog.close();
+                      console.log('OurSession: ID conn', id, '  Session:Password conn', password, ' conn', connection);
+
+                      //  authDialog.close();
                         resolve(connection);
                     }, err => {
                         if (err === JitsiConnectionErrors.PASSWORD_REQUIRED) {
-                            authDialog.displayError(err);
+                        //    authDialog.displayError(err);
+                              console.log("Password wrong in the session ");
                         } else {
-                            authDialog.close();
+                          //  authDialog.close();
+
+                          console.log(err);
+
                             reject(err);
                         }
                     });
@@ -287,6 +300,7 @@ function showXmppPasswordPrompt(roomName, connect) {
       else {
         const authDialog = LoginDialog.showAuthDialog(
             (id, password) => {
+                console.log('Jitsi: ID', id, '  Jitsi:Password', password);
                 connect(id, password, roomName).then(connection => {
                     authDialog.close();
                     resolve(connection);
