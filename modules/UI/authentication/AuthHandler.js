@@ -165,7 +165,7 @@ function initJWTTokenListener(room) {
 
  function loginWithSavedCred(room, lockPassword,  id, password) {
 
-   let flag = true;
+   let flag = false;
        room.authenticateAndUpgradeRole({
            id,
            password,
@@ -176,10 +176,13 @@ function initJWTTokenListener(room) {
                // loginDialog.displayConnectionStatus(
                //     'connection.FETCH_SESSION_ID');
                // return true;
+               flag = true;
            }
        })
        .then(
            /* onFulfilled */ () => {
+
+           flag = true;
 
            // return true;
                // loginDialog.displayConnectionStatus(
