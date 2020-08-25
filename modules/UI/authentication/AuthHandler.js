@@ -171,8 +171,8 @@ function initJWTTokenListener(room) {
 
            /** Called when the XMPP login succeeds. */
            onLoginSuccessful() {
-               loginDialog.displayConnectionStatus(
-                   'connection.FETCH_SESSION_ID');
+               // loginDialog.displayConnectionStatus(
+               //     'connection.FETCH_SESSION_ID');
            }
        })
        .then(
