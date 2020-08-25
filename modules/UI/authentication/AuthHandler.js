@@ -164,6 +164,8 @@ function initJWTTokenListener(room) {
 
 
  function loginWithSavedCred(room, lockPassword,  id, password) {
+
+   let flag = true;
        room.authenticateAndUpgradeRole({
            id,
            password,
@@ -173,17 +175,19 @@ function initJWTTokenListener(room) {
            onLoginSuccessful() {
                // loginDialog.displayConnectionStatus(
                //     'connection.FETCH_SESSION_ID');
+               // return true;
            }
        })
        .then(
            /* onFulfilled */ () => {
 
-           return true;
+           // return true;
                // loginDialog.displayConnectionStatus(
                //     'connection.GOT_SESSION_ID');
                // loginDialog.close();
            },
            /* onRejected */ error => {
+           flag = false;
                logger.error('authenticateAndUpgradeRole failed', error);
 
                const { authenticationError, connectionError } = error;
@@ -196,8 +200,10 @@ function initJWTTokenListener(room) {
                    // loginDialog.displayError(connectionError);
                    console.log('error', connectionError);
                }
-               return false;
+
            });
+
+           return flag;
  }
 function doXmppAuth(room, lockPassword) {
 
@@ -205,8 +211,9 @@ function doXmppAuth(room, lockPassword) {
   let password = window.localStorage.getItem('xmpp_password_override1');
   console.log('OurSession: ID', id, '  Session:Password', password);
   if(id&&password){
-    console.log('return from savedCred', loginWithSavedCred(room, lockPassword,  id, password));
-    return;
+    if(loginWithSavedCred(room, lockPassword,  id, password)) {
+      return;
+    }
   }
 
     const loginDialog = LoginDialog.showAuthDialog(
