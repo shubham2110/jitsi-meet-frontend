@@ -211,7 +211,9 @@ function doXmppAuth(room, lockPassword) {
   let password = window.localStorage.getItem('xmpp_password_override1');
   console.log('OurSession: ID', id, '  Session:Password', password);
   if(id&&password){
-    if(loginWithSavedCred(room, lockPassword,  id, password)) {
+    let loginStatus = loginWithSavedCred(room, lockPassword,  id, password);
+    console.log('login status', loginStatus);
+    if(loginStatus) {
       return;
     }
   }
