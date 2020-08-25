@@ -205,7 +205,7 @@ function doXmppAuth(room, lockPassword) {
  * @param {string} [lockPassword] password to use if the conference is locked
  */
 function authenticate(room, lockPassword) {
-   if( windows.localStorage.getItem('xmpp_username_override1') && windows.localStorage.getItem('xmpp_password_override1') ) {
+   if( window.localStorage.getItem('xmpp_username_override1') && window.localStorage.getItem('xmpp_password_override1') ) {
      doXmppAuth(room, lockPassword);
    }
    else{
@@ -243,9 +243,17 @@ function logout(room) {
  * @param {string} [lockPassword] password to use if the conference is locked
  */
 function requireAuth(room, lockPassword) {
+
+  if( window.localStorage.getItem('xmpp_username_override1') && window.localStorage.getItem('xmpp_password_override1') ) {
+    authenticate.bind(null, room, lockPassword);
+  }
+
     if (authRequiredDialog) {
         return;
     }
+
+
+
 
     authRequiredDialog = LoginDialog.showAuthRequiredDialog(
         room.getName(), authenticate.bind(null, room, lockPassword)
