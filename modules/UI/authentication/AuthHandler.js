@@ -161,7 +161,54 @@ function initJWTTokenListener(room) {
  * @param {JitsiConference} room
  * @param {string} [lockPassword] password to use if the conference is locked
  */
+
+
+ function loginWithSavedCred(id, password) {
+       room.authenticateAndUpgradeRole({
+           id,
+           password,
+           roomPassword: lockPassword,
+
+           /** Called when the XMPP login succeeds. */
+           onLoginSuccessful() {
+               loginDialog.displayConnectionStatus(
+                   'connection.FETCH_SESSION_ID');
+           }
+       })
+       .then(
+           /* onFulfilled */ () => {
+
+           return true;
+               // loginDialog.displayConnectionStatus(
+               //     'connection.GOT_SESSION_ID');
+               // loginDialog.close();
+           },
+           /* onRejected */ error => {
+               logger.error('authenticateAndUpgradeRole failed', error);
+
+               const { authenticationError, connectionError } = error;
+
+               if (authenticationError) {
+                   // loginDialog.displayError(
+                   //     'connection.GET_SESSION_ID_ERROR',
+                   //     { msg: authenticationError });
+               } else if (connectionError) {
+                   // loginDialog.displayError(connectionError);
+                   console.log('error', connectionError);
+               }
+               return false;
+           });
+ }
 function doXmppAuth(room, lockPassword) {
+
+  let id =   window.localStorage.getItem('xmpp_username_override1');
+  let password = window.localStorage.getItem('xmpp_password_override1');
+  console.log('OurSession: ID', id, '  Session:Password', password);
+  if(id&&password){
+    console.log('return from savedCred', loginWithSavedCred(id, password));
+    return;
+  }
+
     const loginDialog = LoginDialog.showAuthDialog(
         /* successCallback */ (id, password) => {
             room.authenticateAndUpgradeRole({
