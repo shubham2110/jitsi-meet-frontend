@@ -318,6 +318,7 @@ function requireAuth(room, lockPassword) {
 
   if( window.localStorage.getItem('xmpp_username_override1') && window.localStorage.getItem('xmpp_password_override1') ) {
     authenticate.bind(null, room, lockPassword);
+    return;
   }
 
     if (authRequiredDialog) {
