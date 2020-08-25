@@ -279,8 +279,9 @@ else {
 function authenticate(room, lockPassword) {
    if( window.localStorage.getItem('xmpp_username_override1') && window.localStorage.getItem('xmpp_password_override1') ) {
      doXmppAuth(room, lockPassword);
+     return;
    }
-   else{
+   else {
     if (isTokenAuthEnabled || room.isExternalAuthEnabled()) {
         doExternalAuth(room, lockPassword);
     } else {
@@ -318,19 +319,15 @@ function requireAuth(room, lockPassword) {
 
   if( window.localStorage.getItem('xmpp_username_override1') && window.localStorage.getItem('xmpp_password_override1') ) {
     authenticate(room, lockPassword);
-    return;
-  }
-
+    // return;
+  } else {
     if (authRequiredDialog) {
         return;
     }
-
-
-
-
     authRequiredDialog = LoginDialog.showAuthRequiredDialog(
         room.getName(), authenticate.bind(null, room, lockPassword)
     );
+  }
 }
 
 /**
