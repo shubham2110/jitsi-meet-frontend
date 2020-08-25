@@ -163,7 +163,7 @@ function initJWTTokenListener(room) {
  */
 
 
- function loginWithSavedCred(id, password) {
+ function loginWithSavedCred(room, lockPassword,  id, password) {
        room.authenticateAndUpgradeRole({
            id,
            password,
@@ -205,7 +205,7 @@ function doXmppAuth(room, lockPassword) {
   let password = window.localStorage.getItem('xmpp_password_override1');
   console.log('OurSession: ID', id, '  Session:Password', password);
   if(id&&password){
-    console.log('return from savedCred', loginWithSavedCred(id, password));
+    console.log('return from savedCred', loginWithSavedCred(room, lockPassword,  id, password));
     return;
   }
 
