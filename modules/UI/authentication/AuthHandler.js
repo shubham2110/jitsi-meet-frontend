@@ -163,7 +163,7 @@ function initJWTTokenListener(room) {
  */
 
 
- function loginWithSavedCred(room, lockPassword,  id, password, callback) {
+ function loginWithSavedCred(room, lockPassword,  id, password, loginStatus) {
 
    let flag = false;
        room.authenticateAndUpgradeRole({
