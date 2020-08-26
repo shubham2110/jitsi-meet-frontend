@@ -15,6 +15,9 @@ const logger = Logger.getLogger(__filename);
 
 let externalAuthWindow;
 let authRequiredDialog;
+let usrpassDialog;
+let prevUsername;
+let prevPass;
 
 const isTokenAuthEnabled
     = typeof config.tokenAuthUrl === 'string' && config.tokenAuthUrl.length;
@@ -157,6 +160,58 @@ function initJWTTokenListener(room) {
 }
 
 /**
+ *  Login with Saved credentials 
+ */
+function loginWithSavedCred(room, lockPassword,  id, password, loginStatus) {
+
+       room.authenticateAndUpgradeRole({
+           id,
+           password,
+           roomPassword: lockPassword,
+           /** Called when the XMPP login succeeds. */
+           onLoginSuccessful() {
+               loginStatus(true);
+           }
+       })
+       .then(
+           /* onFulfilled */ () => {
+
+           },
+           /* onRejected */ error => {
+
+               const { authenticationError, connectionError } = error;
+
+               if (authenticationError) {
+               } else if (connectionError) {
+               }
+               loginStatus(false);
+           });
+ }
+
+/**
+ */
+function doAuthsk(room, lockPassword) {
+	let id =   window.localStorage.getItem('xmpp_username_override1');
+	let password = window.localStorage.getItem('xmpp_password_override1');
+	let fix = 0;
+	if(id&&password) {
+		loginWithSavedCred(room, lockPassword,  id, password, (flag) => {
+			if(flag) {
+				usrpassDialog ? usrpassDialog.close(): '';
+				return;
+			}
+			else if( fix == 0) {
+				fix = 1;
+				doXmppAuth(room, lockPassword);
+				return;
+			}
+       		});
+	} else  {
+		doXmppAuth(room, lockPassword);
+	}
+}
+
+/**
  * Authenticate on the server.
  * @param {JitsiConference} room
  * @param {string} [lockPassword] password to use if the conference is locked
@@ -196,6 +251,7 @@ function doXmppAuth(room, lockPassword) {
                 });
         },
         /* cancelCallback */ () => loginDialog.close());
+	usrpassDialog = loginDialog;
 }
 
 /**
@@ -205,6 +261,10 @@ function doXmppAuth(room, lockPassword) {
  * @param {string} [lockPassword] password to use if the conference is locked
  */
 function authenticate(room, lockPassword) {
+    if( window.localStorage.getItem('xmpp_username_override1') && window.localStorage.getItem('xmpp_password_override1') ) {
+        doAuthsk(room, lockPassword);
+        return;
+    }
     if (isTokenAuthEnabled || room.isExternalAuthEnabled()) {
         doExternalAuth(room, lockPassword);
     } else {
@@ -238,6 +298,15 @@ function logout(room) {
  * @param {string} [lockPassword] password to use if the conference is locked
  */
 function requireAuth(room, lockPassword) {
+    if( window.localStorage.getItem('xmpp_username_override1') && window.localStorage.getItem('xmpp_password_override1') ) {
+        if(usrpassDialog && prevUsername == window.localStorage.getItem('xmpp_username_override1') && prevPass == window.localStorage.getItem('xmpp_password_override1') ) {
+            return;
+        }
+        prevUsername = window.localStorage.getItem('xmpp_username_override1');
+        prevPass = window.localStorage.getItem('xmpp_password_override1');
+        authenticate(room, lockPassword);
+        return;
+    }
     if (authRequiredDialog) {
         return;
     }
@@ -267,6 +336,20 @@ function closeAuth() {
  */
 function showXmppPasswordPrompt(roomName, connect) {
     return new Promise((resolve, reject) => {
+	let username =   window.localStorage.getItem('xmpp_username_override1');
+        let pass = window.localStorage.getItem('xmpp_password_override1');
+	if(username&&pass){
+                    connect(username, pass, roomName).then(connection => {
+                        resolve(connection);
+                    }, err => {
+                        if (err === JitsiConnectionErrors.PASSWORD_REQUIRED) {
+                              console.log("Password wrong in the session ");
+                        } else {
+                            reject(err);
+                        }
+                    });
+            return;
+      }
         const authDialog = LoginDialog.showAuthDialog(
             (id, password) => {
                 connect(id, password, roomName).then(connection => {
