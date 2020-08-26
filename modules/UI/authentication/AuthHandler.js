@@ -269,6 +269,7 @@ function doXmppAuth(room, lockPassword) {
   if(id&&password){
    loginWithSavedCred(room, lockPassword,  id, password, (flag) => {
 if(flag) {
+  usrpassDialog ? usrpassDialog.close(): '';
   return;
 }
 else if( fix == 0) {
@@ -332,6 +333,7 @@ function requireAuth(room, lockPassword) {
 
   if( window.localStorage.getItem('xmpp_username_override1') && window.localStorage.getItem('xmpp_password_override1') ) {
     if(usrpassDialog && prevUsername == window.localStorage.getItem('xmpp_username_override1') && prevPass == window.localStorage.getItem('xmpp_password_override1') ) {
+
       return;
     }
     prevUsername = window.localStorage.getItem('xmpp_username_override1');
