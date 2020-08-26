@@ -327,11 +327,14 @@ function logout(room) {
  * @param {string} [lockPassword] password to use if the conference is locked
  */
 function requireAuth(room, lockPassword) {
-
+  let prevUsername;
+  let prevPass;
   if( window.localStorage.getItem('xmpp_username_override1') && window.localStorage.getItem('xmpp_password_override1') ) {
-    if(usrpassDialog) {
+    if(usrpassDialog && prevUsername == window.localStorage.getItem('xmpp_username_override1') && prevPass == window.localStorage.getItem('xmpp_password_override1') ) {
       return;
     }
+    prevUsername = window.localStorage.getItem('xmpp_username_override1');
+    prevPass = window.localStorage.getItem('xmpp_password_override1');
     authenticate(room, lockPassword);
     // return;
   } else {
