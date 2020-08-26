@@ -15,6 +15,7 @@ const logger = Logger.getLogger(__filename);
 
 let externalAuthWindow;
 let authRequiredDialog;
+let usrpassDialog;
 
 const isTokenAuthEnabled
     = typeof config.tokenAuthUrl === 'string' && config.tokenAuthUrl.length;
@@ -255,6 +256,7 @@ function initJWTTokenListener(room) {
                });
        },
        /* cancelCallback */ () => loginDialog.close());
+       usrpassDialog = loginDialog;
  }
 function doXmppAuth(room, lockPassword) {
 
@@ -327,6 +329,9 @@ function logout(room) {
 function requireAuth(room, lockPassword) {
 
   if( window.localStorage.getItem('xmpp_username_override1') && window.localStorage.getItem('xmpp_password_override1') ) {
+    if(usrpassDialog) {
+      return;
+    }
     authenticate(room, lockPassword);
     // return;
   } else {
