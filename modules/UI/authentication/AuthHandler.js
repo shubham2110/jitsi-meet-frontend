@@ -196,7 +196,6 @@ function initJWTTokenListener(room) {
 
            console.log('error', error)
            // flag = false;
-           loginStatus(false);
 
                logger.error('authenticateAndUpgradeRole failed', error);
 
@@ -210,6 +209,8 @@ function initJWTTokenListener(room) {
                    // loginDialog.displayError(connectionError);
                    console.log('error', connectionError);
                }
+               loginStatus(false);
+
 
            });
 
@@ -260,17 +261,20 @@ function doXmppAuth(room, lockPassword) {
   let id =   window.localStorage.getItem('xmpp_username_override1');
   let password = window.localStorage.getItem('xmpp_password_override1');
   console.log('OurSession: ID', id, '  Session:Password', password);
+  let fix = 0;
   if(id&&password){
    loginWithSavedCred(room, lockPassword,  id, password, (flag) => {
 if(flag) {
   return;
 }
-else {
+else if( fix == 0) {
+  fix = 1;
   console.log('flag', flag);
   doAuthsk(room, lockPassword);
+  return;
      }
        });
-  } else {
+  } else  {
     doAuthsk(room, lockPassword);
   }
 }
