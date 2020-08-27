@@ -357,8 +357,8 @@ export function shouldRenderParticipantVideo(stateful: Object | Function, id: st
         return true;
     }
 
-    /* Last, check if the participant is sharing their screen and they are on stage. */
-    const screenShares = state['features/video-layout'].screenShares || [];
+/* Last, check if the participant is sharing their screen and they are on stage. */
+    const screenShares =  ( participant.role == PARTICIPANT_ROLE.MODERATOR ? state['features/video-layout'].screenShares || [] : null);
     const largeVideoParticipantId = state['features/large-video'].participantId;
     const participantIsInLargeVideoWithScreen
         = participant.id === largeVideoParticipantId && screenShares.includes(participant.id);
