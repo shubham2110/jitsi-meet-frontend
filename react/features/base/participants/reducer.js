@@ -146,6 +146,7 @@ function _participant(state: Object = {}, action) {
         if (state.id === id) {
             const newState = { ...state };
 
+
             for (const key in participant) {
                 if (participant.hasOwnProperty(key)
                         && PARTICIPANT_PROPS_TO_OMIT_WHEN_UPDATE.indexOf(key)
@@ -153,6 +154,9 @@ function _participant(state: Object = {}, action) {
                     newState[key] = participant[key];
                 }
             }
+
+            console.log('prev State', state, ' newState', newState);
+
 
             return newState;
         }
