@@ -1240,7 +1240,7 @@ class Toolbox extends Component<Props, State> {
             buttonsLeft.push('chat');
         }
         if (this._shouldShowButton('desktop')
-                && this._isDesktopSharingButtonVisible()) {
+                && this._isDesktopSharingButtonVisible() && !this.props._isGuest) {
             buttonsLeft.push('desktop');
         }
         if (this._shouldShowButton('raisehand')) {
