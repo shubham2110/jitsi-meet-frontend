@@ -965,7 +965,7 @@ class Toolbox extends Component<Props, State> {
             <ToolbarButton
                 accessibilityLabel
                     = { t('toolbar.accessibilityLabel.shareYourScreen') }
-                disabled = { !_desktopSharingEnabled || !localParticipant.role == PARTICIPANT_ROLE.MODERATOR }
+                disabled = { !_desktopSharingEnabled }
                 icon = { IconShareDesktop }
                 onClick = { this._onToolbarToggleScreenshare }
                 toggled = { _screensharing }
@@ -1405,6 +1405,10 @@ function _mapStateToProps(state) {
     const localVideo = getLocalVideoTrack(state['features/base/tracks']);
 
     let desktopSharingDisabledTooltipKey;
+
+
+    console.log('local participant', localParticipant);
+
 
     if (!localParticipant.role == PARTICIPANT_ROLE.MODERATOR) {
         desktopSharingDisabledTooltipKey = true;
