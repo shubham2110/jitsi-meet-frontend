@@ -1242,7 +1242,7 @@ class Toolbox extends Component<Props, State> {
             buttonsLeft.push('chat');
         }
         if (this._shouldShowButton('desktop')
-                && this._isDesktopSharingButtonVisible() && localParticipant.role == PARTICIPANT_ROLE.MODERATOR) {
+                && this._isDesktopSharingButtonVisible()) {
             buttonsLeft.push('desktop');
         }
         if (this._shouldShowButton('raisehand')) {
@@ -1405,6 +1405,10 @@ function _mapStateToProps(state) {
     const localVideo = getLocalVideoTrack(state['features/base/tracks']);
 
     let desktopSharingDisabledTooltipKey;
+
+    if (!localParticipant.role == PARTICIPANT_ROLE.MODERATOR) {
+        desktopSharingDisabledTooltipKey = true;
+    }
 
     if (enableFeaturesBasedOnToken) {
         // we enable desktop sharing if any participant already have this
