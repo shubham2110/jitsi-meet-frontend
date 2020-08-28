@@ -28,7 +28,9 @@ import {
 import {
     getLocalParticipant,
     getParticipants,
-    participantUpdated
+    participantUpdated,
+    PARTICIPANT_JOINED,
+    PARTICIPANT_ROLE
 } from '../../../base/participants';
 import { connect, equals } from '../../../base/redux';
 import { OverflowMenuItem } from '../../../base/toolbox/components';
@@ -913,7 +915,7 @@ class Toolbox extends Component<Props, State> {
             _desktopSharingDisabledTooltipKey
         } = this.props;
 
-        return _desktopSharingEnabled || _desktopSharingDisabledTooltipKey;
+        return _desktopSharingEnabled || _desktopSharingDisabledTooltipKey ;
     }
 
     /**
@@ -963,7 +965,7 @@ class Toolbox extends Component<Props, State> {
             <ToolbarButton
                 accessibilityLabel
                     = { t('toolbar.accessibilityLabel.shareYourScreen') }
-                disabled = { !_desktopSharingEnabled }
+                disabled = { !_desktopSharingEnabled || !localParticipant.role == PARTICIPANT_ROLE.MODERATOR }
                 icon = { IconShareDesktop }
                 onClick = { this._onToolbarToggleScreenshare }
                 toggled = { _screensharing }
@@ -1240,7 +1242,7 @@ class Toolbox extends Component<Props, State> {
             buttonsLeft.push('chat');
         }
         if (this._shouldShowButton('desktop')
-                && this._isDesktopSharingButtonVisible()) {
+                && this._isDesktopSharingButtonVisible() && localParticipant.role == PARTICIPANT_ROLE.MODERATOR) {
             buttonsLeft.push('desktop');
         }
         if (this._shouldShowButton('raisehand')) {
@@ -1407,7 +1409,10 @@ function _mapStateToProps(state) {
     if (enableFeaturesBasedOnToken) {
         // we enable desktop sharing if any participant already have this
         // feature enabled
-        desktopSharingEnabled = getParticipants(state)
+        if (localParticipant.role == PARTICIPANT_ROLE.MODERATOR) {
+            desktopSharingEnabled = true;    
+        }
+        /*desktopSharingEnabled = getParticipants(state)
             .find(({ features = {} }) =>
                 String(features['screen-sharing']) === 'true') !== undefined;
 
@@ -1418,7 +1423,7 @@ function _mapStateToProps(state) {
         } else {
             desktopSharingDisabledTooltipKey
                 = 'dialog.shareYourScreenDisabled';
-        }
+        }*/
     }
 
     // NB: We compute the buttons again here because if URL parameters were used to
