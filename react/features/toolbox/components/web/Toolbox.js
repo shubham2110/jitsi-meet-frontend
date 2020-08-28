@@ -28,9 +28,7 @@ import {
 import {
     getLocalParticipant,
     getParticipants,
-    participantUpdated,
-    PARTICIPANT_JOINED,
-    PARTICIPANT_ROLE
+    participantUpdated
 } from '../../../base/participants';
 import { connect, equals } from '../../../base/redux';
 import { OverflowMenuItem } from '../../../base/toolbox/components';
@@ -915,7 +913,7 @@ class Toolbox extends Component<Props, State> {
             _desktopSharingDisabledTooltipKey
         } = this.props;
 
-        return _desktopSharingEnabled || _desktopSharingDisabledTooltipKey ;
+        return _desktopSharingEnabled || _desktopSharingDisabledTooltipKey;
     }
 
     /**
@@ -1406,24 +1404,15 @@ function _mapStateToProps(state) {
 
     let desktopSharingDisabledTooltipKey;
 
-
-    console.log('local participant', localParticipant);
-
-
-    if (!localParticipant.role == PARTICIPANT_ROLE.MODERATOR) {
-        desktopSharingDisabledTooltipKey = true;
-    }
-
     if (enableFeaturesBasedOnToken) {
         // we enable desktop sharing if any participant already have this
         // feature enabled
-        if (localParticipant.role == PARTICIPANT_ROLE.MODERATOR) {
-            desktopSharingEnabled = true;    
-        }
-        /*desktopSharingEnabled = getParticipants(state)
+        desktopSharingEnabled = getParticipants(state)
             .find(({ features = {} }) =>
                 String(features['screen-sharing']) === 'true') !== undefined;
-
+        if (!localParticipant.role == "moderator") {
+            desktopSharingEnabled = false;
+        }
         // we want to show button and tooltip
         if (state['features/base/jwt'].isGuest) {
             desktopSharingDisabledTooltipKey
@@ -1431,7 +1420,7 @@ function _mapStateToProps(state) {
         } else {
             desktopSharingDisabledTooltipKey
                 = 'dialog.shareYourScreenDisabled';
-        }*/
+        }
     }
 
     // NB: We compute the buttons again here because if URL parameters were used to
