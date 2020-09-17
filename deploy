@@ -17,4 +17,4 @@ cp -r connection_optimization   /usr/share/jitsi-meet/
 cp -r resources/robots.txt      /usr/share/jitsi-meet/
 cp -r resources/*.sh                    /usr/share/jitsi-meet/scripts/
 cp -r resources/prosody-plugins/         /usr/share/jitsi-meet/
-ln -s /home/iocconnect/IOC_Connect/VC_Django/IOC_Connect_Web/static/IOC_Connect_Web /usr/share/jitsi-meet/static/IOC_Connect_Web 
+ln -s /etc/iocconnect/IOC_Connect/VC_Django/IOC_Connect_Web/static/IOC_Connect_Web /usr/share/jitsi-meet/static/IOC_Connect_Web 
