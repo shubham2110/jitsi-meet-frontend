@@ -46,10 +46,8 @@ import {
     SET_DESKTOP_SHARING_ENABLED,
     SET_FOLLOW_ME,
     SET_FORCED_MUTE,
-    SET_MAX_RECEIVER_VIDEO_QUALITY,
     SET_PASSWORD,
     SET_PASSWORD_FAILED,
-    SET_PREFERRED_VIDEO_QUALITY,
     SET_ROOM,
     SET_PENDING_SUBJECT_CHANGE,
     SET_START_MUTED_POLICY
@@ -633,23 +631,6 @@ export function setForcedMute(enabled: boolean) {
 }
 
 /**
- * Sets the max frame height that should be received from remote videos.
- *
- * @param {number} maxReceiverVideoQuality - The max video frame height to
- * receive.
- * @returns {{
- *     type: SET_MAX_RECEIVER_VIDEO_QUALITY,
- *     maxReceiverVideoQuality: number
- * }}
- */
-export function setMaxReceiverVideoQuality(maxReceiverVideoQuality: number) {
-    return {
-        type: SET_MAX_RECEIVER_VIDEO_QUALITY,
-        maxReceiverVideoQuality
-    };
-}
-
-/**
  * Sets the password to join or lock a specific JitsiConference.
  *
  * @param {JitsiConference} conference - The JitsiConference which requires a
@@ -712,24 +693,6 @@ export function setPassword(
             return Promise.reject();
         }
         }
-    };
-}
-
-/**
- * Sets the max frame height the user prefers to send and receive from the
- * remote participants.
- *
- * @param {number} preferredVideoQuality - The max video resolution to send and
- * receive.
- * @returns {{
- *     type: SET_PREFERRED_VIDEO_QUALITY,
- *     preferredVideoQuality: number
- * }}
- */
-export function setPreferredVideoQuality(preferredVideoQuality: number) {
-    return {
-        type: SET_PREFERRED_VIDEO_QUALITY,
-        preferredVideoQuality
     };
 }
 
