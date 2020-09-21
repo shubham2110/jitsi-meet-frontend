@@ -177,7 +177,10 @@ export default class JitsiStreamBlurEffect {
         );
 
         if (segmentation) {
+            console.log(' blur in processSeg', this.blur);
+            this.blur = false;
             if (this.blur) {
+
                 const blurData = new ImageData(liveData.data.slice(),
                     liveData.width, liveData.height);
 
@@ -199,6 +202,8 @@ export default class JitsiStreamBlurEffect {
                     }
                 }
             }
+
+            console.log('imageData in processSeg', this.imageData);
             if (this.imageData) {
                 const dataL = liveData.data;
                 const imageData = this.imageData;
@@ -255,6 +260,8 @@ export default class JitsiStreamBlurEffect {
      * @returns {void}
      */
     generateImageData(img: HTMLImageElement) {
+
+        console.log("inside generator");
         /**
          * https://stackoverflow.com/a/21961894/7886229
          * By Ken Fyrstenberg Nilsen
@@ -320,6 +327,9 @@ export default class JitsiStreamBlurEffect {
 
         this.imageData = ctx.getImageData(0, 0, canvas.width, canvas
             .height);
+
+        console.log('imageData', this.imageData);
+        
     }
 
     /**
