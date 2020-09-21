@@ -68,12 +68,10 @@ export default class JitsiStreamBlurEffect {
 
     imageElement = () => {
         // Import result is the URL of your image
-        let src =
-            'https://image.shutterstock.com/image-photo/beautiful-water-drop-on-dandelion-260nw-789676552.jpg';
-        return <img src = {
-            src
-        }
-        alt = "Logo" / > ;
+        return React.createElement("img", {
+            src: 'https://image.shutterstock.com/image-photo/beautiful-water-drop-on-dandelion-260nw-789676552.jpg',
+            // any other image attributes you need go here
+        }, null);
     }
 
     startEffect(stream: MediaStream, blur: boolean = true, image ? :
@@ -81,6 +79,7 @@ export default class JitsiStreamBlurEffect {
         this.stream = stream;
 
         this.blur = blur;
+
 
         console.log(" image before", image);
         image = this.imageElement();
