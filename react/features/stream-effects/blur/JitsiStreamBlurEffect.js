@@ -285,6 +285,7 @@ export default class JitsiStreamBlurEffect {
 
         const iw = img.width;
         const ih = img.height;
+        console.log(' image width', iw, ' image height', ih);
         const r = Math.min(w / iw, h / ih);
         let nw = iw * r; // new prop. width
         let nh = ih * r; // new prop. height
