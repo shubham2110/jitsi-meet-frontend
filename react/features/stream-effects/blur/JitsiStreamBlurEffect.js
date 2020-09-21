@@ -70,7 +70,7 @@ export default class JitsiStreamBlurEffect {
         // Import result is the URL of your image
         var htmlimg = new Image();
         htmlimg.setAttribute('crossOrigin', 'anonymous');
-        htmlimg.src = 'https://wallpapercave.com/wp/wp1848525.jpg';
+        htmlimg.src = 'https://ioc.instantconnect.in/static/background.jpg';
         return htmlimg;
         // return document.createElement("img", {
         //     src: 'https://wallpapercave.com/wp/wp1848525.jpg',
