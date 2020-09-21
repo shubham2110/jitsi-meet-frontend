@@ -69,7 +69,7 @@ export default class JitsiStreamBlurEffect {
     imageElement = () => {
         // Import result is the URL of your image
         return document.createElement("img", {
-            src: 'https://image.shutterstock.com/image-photo/beautiful-water-drop-on-dandelion-260nw-789676552.jpg',
+            src: 'https://wallpapercave.com/wp/wp1848525.jpg',
             // any other image attributes you need go here
         }, null);
     }
