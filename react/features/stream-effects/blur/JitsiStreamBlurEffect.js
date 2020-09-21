@@ -68,7 +68,7 @@ export default class JitsiStreamBlurEffect {
 
     imageElement = () => {
         // Import result is the URL of your image
-        return React.createElement("img", {
+        return document.createElement("img", {
             src: 'https://image.shutterstock.com/image-photo/beautiful-water-drop-on-dandelion-260nw-789676552.jpg',
             // any other image attributes you need go here
         }, null);
