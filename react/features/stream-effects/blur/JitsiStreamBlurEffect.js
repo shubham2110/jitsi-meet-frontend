@@ -68,10 +68,13 @@ export default class JitsiStreamBlurEffect {
 
     imageElement = () => {
         // Import result is the URL of your image
-        return document.createElement("img", {
-            src: 'https://wallpapercave.com/wp/wp1848525.jpg',
-            // any other image attributes you need go here
-        }, null);
+        var htmlimg = new Image();
+        htmlimg.src = 'https://wallpapercave.com/wp/wp1848525.jpg';
+        return htmlimg;
+        // return document.createElement("img", {
+        //     src: 'https://wallpapercave.com/wp/wp1848525.jpg',
+        //     // any other image attributes you need go here
+        // }, null);
     }
 
     startEffect(stream: MediaStream, blur: boolean = true, image ? :
