@@ -64,21 +64,42 @@ export default class JitsiStreamBlurEffect {
      * @param {HTMLImageElement | undefined} image - Used for virtual background/background replacement.
      * @returns {MediaStream} - The stream with the applied effect.
      */
-    startEffect(stream: MediaStream, blur: boolean = true, image?: HTMLImageElement) {
+
+
+    imageElement = () => {
+        // Import result is the URL of your image
+        let src =
+            'https://image.shutterstock.com/image-photo/beautiful-water-drop-on-dandelion-260nw-789676552.jpg';
+        return <img src = {
+            src
+        }
+        alt = "Logo" / > ;
+    }
+
+    startEffect(stream: MediaStream, blur: boolean = true, image ? :
+        HTMLImageElement) {
         this.stream = stream;
 
         this.blur = blur;
+
+        console.log(" image before", image);
+        image = this.imageElement();
+
+        console.log(" image after", image);
+
 
         this.tmpVideo.addEventListener('loadedmetadata', () => {
             this.setNewSettings(blur, image);
             this.finalCanvas.width = this.tmpVideo.videoWidth;
             this.finalCanvas.height = this.tmpVideo.videoHeight;
             this.videoRenderCanvas.width = this.tmpVideo.videoWidth;
-            this.videoRenderCanvas.height = this.tmpVideo.videoHeight;
+            this.videoRenderCanvas.height = this.tmpVideo
+                .videoHeight;
             this.bodyPixCanvas.width = this.tmpVideo.videoWidth;
             this.bodyPixCanvas.height = this.tmpVideo.videoHeight;
 
-            const finalCanvasCtx = this.finalCanvas.getContext('2d');
+            const finalCanvasCtx = this.finalCanvas.getContext(
+                '2d');
 
             finalCanvasCtx.drawImage(this.tmpVideo, 0, 0);
         });
@@ -114,7 +135,8 @@ export default class JitsiStreamBlurEffect {
      * false otherwise.
      */
     isEnabled(jitsiLocalTrack: Object) {
-        return jitsiLocalTrack.isVideoTrack() && jitsiLocalTrack.videoType === 'camera';
+        return jitsiLocalTrack.isVideoTrack() && jitsiLocalTrack
+            .videoType === 'camera';
     }
 
 
@@ -127,7 +149,8 @@ export default class JitsiStreamBlurEffect {
         this.videoRenderCanvasCtx.drawImage(this.tmpVideo, 0, 0);
         if (this.previousSegmentationComplete) {
             this.previousSegmentationComplete = false;
-            this.bpModel.segmentPerson(this.videoRenderCanvas, segmentationProperties).then(segmentation => {
+            this.bpModel.segmentPerson(this.videoRenderCanvas,
+                segmentationProperties).then(segmentation => {
                 this.lastSegmentation = segmentation;
                 this.previousSegmentationComplete = true;
             });
@@ -144,7 +167,8 @@ export default class JitsiStreamBlurEffect {
      * @param {bodyPix.SemanticPersonSegmentation | null} segmentation - Segmentation data.
      * @returns {void}
      */
-    processSegmentation(segmentation: bodyPix.SemanticPersonSegmentation | null) {
+    processSegmentation(segmentation: bodyPix.SemanticPersonSegmentation |
+        null) {
         const ctx = this.finalCanvas.getContext('2d');
         const liveData = this.videoRenderCanvasCtx.getImageData(
             0,
@@ -155,9 +179,11 @@ export default class JitsiStreamBlurEffect {
 
         if (segmentation) {
             if (this.blur) {
-                const blurData = new ImageData(liveData.data.slice(), liveData.width, liveData.height);
+                const blurData = new ImageData(liveData.data.slice(),
+                    liveData.width, liveData.height);
 
-                StackBlur.imageDataRGB(blurData, 0, 0, liveData.width, liveData.height, 12);
+                StackBlur.imageDataRGB(blurData, 0, 0, liveData.width,
+                    liveData.height, 12);
                 const dataL = liveData.data;
 
                 for (let x = 0; x < this.finalCanvas.width; x++) {
@@ -185,9 +211,12 @@ export default class JitsiStreamBlurEffect {
                         // eslint-disable-next-line max-depth
                         if (segmentation.data[n] === 0) {
                             dataL[n * 4] = this.imageData.data[n * 4];
-                            dataL[(n * 4) + 1] = imageData.data[(n * 4) + 1];
-                            dataL[(n * 4) + 2] = imageData.data[(n * 4) + 2];
-                            dataL[(n * 4) + 3] = imageData.data[(n * 4) + 3];
+                            dataL[(n * 4) + 1] = imageData.data[(n * 4) +
+                                1];
+                            dataL[(n * 4) + 2] = imageData.data[(n * 4) +
+                                2];
+                            dataL[(n * 4) + 3] = imageData.data[(n * 4) +
+                                3];
                         }
                     }
                 }
@@ -203,9 +232,14 @@ export default class JitsiStreamBlurEffect {
      * @param {HTMLImageElement | undefined} image - Used for virtual background/background replacement.
      * @returns {void}
      */
-    setNewSettings(blur: boolean, image?: HTMLImageElement) {
+    setNewSettings(blur: boolean, image ? : HTMLImageElement) {
+
+        blur = false;
+        console.log(" blur", blur, ' image', image);
         if (blur && image) {
-            throw new Error('I can\'t blur and replace image...well I can...but that would be stupid.');
+            throw new Error(
+                'I can\'t blur and replace image...well I can...but that would be stupid.'
+            );
         }
         this.blur = blur;
         if (image) {
@@ -248,7 +282,8 @@ export default class JitsiStreamBlurEffect {
         const r = Math.min(w / iw, h / ih);
         let nw = iw * r; // new prop. width
         let nh = ih * r; // new prop. height
-        let ar = 1, ch, cw, cx, cy;
+        let ar = 1,
+            ch, cw, cx, cy;
 
         // decide which gap to fill
         if (nw < w) {
@@ -284,7 +319,8 @@ export default class JitsiStreamBlurEffect {
         // fill image in dest. rectangle
         ctx.drawImage(img, cx, cy, cw, ch, x, y, w, h);
 
-        this.imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        this.imageData = ctx.getImageData(0, 0, canvas.width, canvas
+            .height);
     }
 
     /**
