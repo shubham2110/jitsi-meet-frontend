@@ -34,6 +34,7 @@ import { connect, equals } from '../../../base/redux';
 import { OverflowMenuItem } from '../../../base/toolbox/components';
 import { getLocalVideoTrack, toggleScreensharing } from '../../../base/tracks';
 import { VideoBlurButton } from '../../../blur';
+import { BackgroundImage } from '../../../blur/components/BackgroundImage';
 import { CHAT_SIZE, ChatCounter, toggleChat } from '../../../chat';
 import { EmbedMeetingDialog } from '../../../embed-meeting';
 import { SharedDocumentButton } from '../../../etherpad';
@@ -1360,6 +1361,10 @@ class Toolbox extends Component<Props, State> {
                             </ul>
                         </OverflowMenuButton> }
                 </div>
+
+                <div>
+                    <BackgroundImage/>
+                    </div>
             </div>);
     }
 

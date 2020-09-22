@@ -1,97 +1,57 @@
-// @flow
+import React,{Component} from 'react'; 
 
-import React from 'react';
+class BackgroundImage extends Component { 
 
-import { createVideoBlurEvent, sendAnalytics } from '../../analytics';
-import { translate } from '../../base/i18n';
-import { IconBlurBackground } from '../../base/icons';
-import { connect } from '../../base/redux';
-import { AbstractButton, BetaTag } from '../../base/toolbox/components';
-import type { AbstractButtonProps } from '../../base/toolbox/components';
-import { toggleBlurEffect } from '../actions';
+	state = { 
 
-/**
- * The type of the React {@code Component} props of {@link VideoBlurButton}.
- */
-type Props = AbstractButtonProps & {
+	// Initially, no file is selected 
+	selectedFile: null
+	}; 
+	
+	// On file select (from the pop up) 
+	onFileChange = event => { 
+	
+	// Update the state 
+	this.setState({ selectedFile: event.target.files[0] }); 
+	
+	}; 
+	
+	// On file upload (click the upload button) 
+	onFileUpload = () => { 
+	
+	// Create an object of formData 
 
-    /**
-     * True if the video background is blurred or false if it is not.
-     */
-    _isVideoBlurred: boolean,
+	// Details of the uploaded file 
+	console.log(this.state.selectedFile); 
+	
+	// Request made to the backend api 
+	// Send formData object 
+	axios.post("api/uploadfile", formData); 
+	}; 
+	
+	// File content to be displayed after 
+	// file upload is complete 
+ 
+	
+	render() { 
+	
+	return ( 
+		<div> 
+			<h1> 
+			GeeksforGeeks 
+			</h1> 
+			<h3> 
+			File Upload using React! 
+			</h3> 
+			<div> 
+				<input type="file" onChange={this.onFileChange} /> 
+				<button onClick={this.onFileUpload}> 
+				Upload! 
+				</button> 
+			</div> 
+		</div> 
+	); 
+	} 
+} 
 
-    /**
-     * The redux {@code dispatch} function.
-     */
-    dispatch: Function
-
-};
-
-/**
- * An abstract implementation of a button that toggles the video blur effect.
- */
-class BackgroundImage extends AbstractButton<Props, *> {
-    accessibilityLabel = 'toolbar.accessibilityLabel.videoblur';
-    icon = IconBlurBackground;
-    label = 'Background Image Upload';
-    tooltip = 'Upload Background Image';
-    toggledLabel = 'Upload';
-
-    /**
-     * Helper function to be implemented by subclasses, which returns
-     * a React Element to display (a beta tag) at the end of the button.
-     *
-     * @override
-     * @protected
-     * @returns {ReactElement}
-     */
-    _getElementAfter() {
-        return <BetaTag />;
-    }
-
-    /**
-     * Handles clicking / pressing the button, and toggles the blur effect
-     * state accordingly.
-     *
-     * @protected
-     * @returns {void}
-     */
-    _handleClick() {
-
-        console.log(' button  clicked', ' props', this.props );
-        // const { _isVideoBlurred, dispatch } = this.props;
-        // const value = !_isVideoBlurred;
-
-        // sendAnalytics(createVideoBlurEvent(value ? 'started' : 'stopped'));
-        // dispatch(toggleBlurEffect(value));
-    }
-
-    /**
-     * Returns {@code boolean} value indicating if the blur effect is
-     * enabled or not.
-     *
-     * @protected
-     * @returns {boolean}
-     */
-    _isToggled() {
-        return this.props._isVideoBlurred;
-    }
-}
-
-/**
- * Maps (parts of) the redux state to the associated props for the
- * {@code VideoBlurButton} component.
- *
- * @param {Object} state - The Redux state.
- * @private
- * @returns {{
- *     _isVideoBlurred: boolean
- * }}
- */
-function _mapStateToProps(state): Object {
-    return {
-        _isVideoBlurred: Boolean(state['features/blur'].blurEnabled)
-    };
-}
-
-export default translate(connect(_mapStateToProps)(BackgroundImage));
+export default BackgroundImage; 

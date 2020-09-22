@@ -58,9 +58,6 @@ class VideoBlurButton extends AbstractButton<Props, *> {
      */
     _handleClick() {
         const { _isVideoBlurred, dispatch } = this.props;
-
-        console.log(' button clicked ', ' props', this.props);
-        
         const value = !_isVideoBlurred;
 
         sendAnalytics(createVideoBlurEvent(value ? 'started' : 'stopped'));
