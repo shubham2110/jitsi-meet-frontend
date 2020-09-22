@@ -1032,10 +1032,10 @@ class Toolbox extends Component<Props, State> {
                 key = 'videobackgroundblur'
                 showLabel = { true }
                 visible={this._shouldShowButton('videobackgroundblur') && !_screensharing} />,
-                <UploadBackGroundImage
-                key = 'backgroundimage'
-                showLabel = { true }
-                visible={this._shouldShowButton('videobackgroundblur') && !_screensharing} />,
+                // <UploadBackGroundImage
+                // key = 'backgroundimage'
+                // showLabel = { true }
+                // visible={this._shouldShowButton('videobackgroundblur') && !_screensharing} />,
             <SettingsButton
                 key = 'settings'
                 showLabel = { true }
