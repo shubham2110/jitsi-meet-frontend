@@ -195,7 +195,7 @@ var interfaceConfig = {
         'fodeviceselection', 'hangup', 'profile', 'info' , 'chat', 'recording',
         'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
         'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-        'tileview', 'videobackgroundblur', 'backgroundimage', 'download', 'help', 'mute-everyone', 'security'
+        'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone', 'security'
     ],
 
     TOOLBAR_TIMEOUT: 4000,
@@ -249,7 +249,7 @@ var interfaceConfig = {
      */
     // MOBILE_DYNAMIC_LINK: {
     //    APN: 'org.jitsi.meet',
-    //    APP_CODE: 'w2*atb',
+    //    APP_CODE: 'w2atb',
     //    CUSTOM_DOMAIN: undefined,
     //    IBI: 'com.atlassian.JitsiMeet.ios',
     //    ISI: '1165103905'

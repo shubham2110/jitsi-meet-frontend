@@ -33,8 +33,7 @@ import {
 import { connect, equals } from '../../../base/redux';
 import { OverflowMenuItem } from '../../../base/toolbox/components';
 import { getLocalVideoTrack, toggleScreensharing } from '../../../base/tracks';
-import { VideoBlurButton } from '../../../blur/components/VideoBlurButton';
-import { BackgroundImage } from '../../../blur/components/BackgroundImage';
+import { VideoBlurButton } from '../../../blur';
 import { CHAT_SIZE, ChatCounter, toggleChat } from '../../../chat';
 import { EmbedMeetingDialog } from '../../../embed-meeting';
 import { SharedDocumentButton } from '../../../etherpad';
@@ -1032,11 +1031,7 @@ class Toolbox extends Component<Props, State> {
             <VideoBlurButton
                 key = 'videobackgroundblur'
                 showLabel = { true }
-                visible={this._shouldShowButton('videobackgroundblur') && !_screensharing} />,
-                <BackgroundImage
-                key = 'backgroundimage'
-                showLabel = { true }
-                visible={this._shouldShowButton('videobackgroundblur') && !_screensharing} />,
+                visible = { this._shouldShowButton('videobackgroundblur') && !_screensharing } />,
             <SettingsButton
                 key = 'settings'
                 showLabel = { true }
@@ -1362,8 +1357,7 @@ class Toolbox extends Component<Props, State> {
                                 aria-label = { t(toolbarAccLabel) }
                                 className = 'overflow-menu'>
                                 { overflowMenuContent }
-                        </ul>
-                        
+                            </ul>
                         </OverflowMenuButton> }
                 </div>
             </div>);
