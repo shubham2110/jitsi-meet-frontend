@@ -1032,6 +1032,10 @@ class Toolbox extends Component<Props, State> {
                 key = 'videobackgroundblur'
                 showLabel = { true }
                 visible = { this._shouldShowButton('videobackgroundblur') && !_screensharing } />,
+            <VirtualB
+                key='virtualb'
+                showLabel={true}
+                visible={this._shouldShowButton('videobackgroundblur') && !_screensharing} />,
             <SettingsButton
                 key = 'settings'
                 showLabel = { true }
