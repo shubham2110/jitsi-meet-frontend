@@ -83,7 +83,7 @@ export default class JitsiStreamBlurEffect {
     startEffect(stream: MediaStream, blur: boolean = true, image ? :
         HTMLImageElement) {
         this.stream = stream;
-
+        // console.log('blur', blur);
         this.blur = blur;
         if (localStorage.getItem('backgroundImage')) {
             image = this.imageElement();
@@ -240,9 +240,6 @@ export default class JitsiStreamBlurEffect {
      * @returns {void}
      */
     setNewSettings(blur: boolean, image ? : HTMLImageElement) {
-
-        blur = false;
-        console.log(" blur", blur, ' image', image);
         if (blur && image) {
             throw new Error(
                 'I can\'t blur and replace image...well I can...but that would be stupid.'
