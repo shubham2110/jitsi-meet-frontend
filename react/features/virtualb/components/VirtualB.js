@@ -113,6 +113,13 @@ class VirtualB extends AbstractButton<Props, *> {
                     )
                 }
 }
+
+function _mapStateToProps(state): Object {
+  return {
+      
+  };
+}
+
   
 
 export default translate(connect(_mapStateToProps)(VirtualB));
