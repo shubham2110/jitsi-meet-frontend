@@ -34,7 +34,7 @@ class VirtualB extends Component {
     onFileChange = event => {
 
         // Update the state 
-        let imgData = getBase64Image(event.target.files[0]);
+        let imgData = this.getBase64Image(event.target.files[0]);
       localStorage.setItem("backgroundImage", imgData);
       
       var dataImage = localStorage.getItem('backgroundImage');
