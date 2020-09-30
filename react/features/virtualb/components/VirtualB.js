@@ -2,6 +2,8 @@ import React, {
     Component
 } from 'react';
 
+import { virtualBDisabled, virtualBEnabled } from '../action';
+
 class VirtualB extends Component {
     state = {
       localImageUrl: false
@@ -64,13 +66,23 @@ class VirtualB extends Component {
           this.setState({
                localImageUrl:  true
           });
-  });
+        
+        if (this.state.localImageUrl) {
+          dispatchEvent(virtualBEnabled());
+        }
+      });
+    
+
+    
   };
+
+  
 
     // On file upload (click the upload button) 
     deleteImage = () => {
       localStorage.removeItem("backgroundImage");
-      this.setState({ localImageUrl : null })
+      this.setState({ localImageUrl: null });
+      dispatchEvent(virtualBDisabled());
     };
 
     render() {
