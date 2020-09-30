@@ -100,7 +100,7 @@ class VirtualB extends AbstractButton<Props, *> {
     render() {
       return (
         <div> {
-                  !this.state.localImageUrl ? (<input type="file"
+                  !this.state.localImageUrl ? (<input style={{marginLeft:15}} type="file"
                         onChange = {
                             this.onFileChange
                         }
