@@ -12,11 +12,23 @@ class VirtualB extends Component {
     if (localStorage.getItem("backgroundImage")) {
       var dataImage = localStorage.getItem('backgroundImage');
       this.setState({
-        localImageUrl: "data:image/png;base64," + dataImage
+        localImageUrl:  dataImage
+       // localImageUrl: "data:image/png;base64," + dataImage
       });
       }
   }
   
+  getBase64 = file => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    }
+  }
+
+
+
    getBase64Image = (img) => {
     var canvas = document.createElement("canvas");
     canvas.width = img.width;
@@ -32,9 +44,17 @@ class VirtualB extends Component {
 }
 
     // On file select (from the pop up) 
-    onFileChange = event => {
+  onFileChange = event => {
+
+       const file = e.target.files[0];
+      this.getBase64(file).then(base64 => {
+            localStorage["backgroundImage"] = base64;
+            console.debug("file stored", base64);
+        });
+
 
         // Update the state 
+      /*
         let imgData = this.getBase64Image(event.target.files[0]);
       localStorage.setItem("backgroundImage", imgData);
       
@@ -44,6 +64,7 @@ class VirtualB extends Component {
         this.setState({
           localImageUrl: dataurl
         });
+        */
     };
 
     // On file upload (click the upload button) 
