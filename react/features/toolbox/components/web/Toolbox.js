@@ -74,6 +74,7 @@ import {
     setOverflowMenuVisible,
     setToolbarHovered
 } from '../../actions';
+
 import { isToolboxVisible } from '../../functions';
 import DownloadButton from '../DownloadButton';
 import HangupButton from '../HangupButton';
