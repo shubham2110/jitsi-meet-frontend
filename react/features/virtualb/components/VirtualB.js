@@ -7,13 +7,11 @@ class VirtualB extends Component {
       localImageUrl: null
     };
 
-  componentDidMount() {
-      
+  componentDidMount() {   
     if (localStorage.getItem("backgroundImage")) {
       var dataImage = localStorage.getItem('backgroundImage');
       this.setState({
         localImageUrl:  dataImage
-       // localImageUrl: "data:image/png;base64," + dataImage
       });
       }
   }
@@ -28,7 +26,7 @@ class VirtualB extends Component {
   }
 
 
-
+/*
    getBase64Image = (img) => {
     var canvas = document.createElement("canvas");
     canvas.width = img.width;
@@ -42,18 +40,11 @@ class VirtualB extends Component {
      console.log(dataURL);
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
+*/
 
     // On file select (from the pop up) 
   onFileChange = event => {
-
-       const file = event.target.files[0];
-      this.getBase64(file).then(base64 => {
-            localStorage["backgroundImage"] = base64;
-            console.debug("file stored", base64);
-        });
-
-
-        // Update the state 
+    // Update the state 
       /*
         let imgData = this.getBase64Image(event.target.files[0]);
       localStorage.setItem("backgroundImage", imgData);
@@ -65,11 +56,17 @@ class VirtualB extends Component {
           localImageUrl: dataurl
         });
         */
-    };
+    
+       const file = event.target.files[0];
+      this.getBase64(file).then(base64 => {
+            localStorage["backgroundImage"] = base64;
+          //  console.debug("file stored", base64);
+  });
+  };
 
     // On file upload (click the upload button) 
     deleteImage = () => {
-        localStorage.setItem('backgroundImage', null);
+      localStorage.removeItem("backgroundImage");
     };
 
     render() {
@@ -80,7 +77,7 @@ class VirtualB extends Component {
                             this.onFileChange
                         }
           />) : (<div>
-              <img src={this.state.localImageUrl} />
+
             <button onClick={this.deleteImage}>
                 Clear Background Image </button>
                         </div>)}  
