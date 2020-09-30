@@ -240,11 +240,11 @@ export default class JitsiStreamBlurEffect {
      * @returns {void}
      */
     setNewSettings(blur: boolean, image ? : HTMLImageElement) {
-        if (blur && image) {
-            throw new Error(
-                'I can\'t blur and replace image...well I can...but that would be stupid.'
-            );
-        }
+        // if (blur && image) {
+        //     throw new Error(
+        //         'I can\'t blur and replace image...well I can...but that would be stupid.'
+        //     );
+        // }
         this.blur = blur;
         if (image) {
             this.generateImageData(image);
