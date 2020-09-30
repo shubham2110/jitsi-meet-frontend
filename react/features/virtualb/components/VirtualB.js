@@ -38,8 +38,10 @@ class VirtualB extends Component {
       localStorage.setItem("backgroundImage", imgData);
       
       var dataImage = localStorage.getItem('backgroundImage');
+      let dataurl = "data:image/png;base64," + dataImage;
+      console.log('imageDtata', dataurl)
         this.setState({
-          localImageUrl: "data:image/png;base64," + dataImage
+          localImageUrl: dataurl
         });
     };
 
