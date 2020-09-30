@@ -11,7 +11,7 @@ class VirtualB extends Component {
 
     componentDidMount() {
         this.setState({
-            selectedFile: localStorage.getItem("backgroundImage")
+            selectedFile : localStorage.getItem("backgroundImage")
         })
     }
 
@@ -20,10 +20,8 @@ class VirtualB extends Component {
 
         // Update the state 
         this.setState({
-            selectedFile: URL.createObjectURL(event.target.files[0])
+            selectedFile: event.target.files[0]
         });
-
-
 
     };
 
@@ -33,19 +31,17 @@ class VirtualB extends Component {
     };
 
     render() {
-            return ( <
-                div > {
-                    !this.state.selectedFile ? ( < input value =
-                        "Virtual Background"
-                        type = "file"
+      return (
+        <div> {
+                  !this.state.selectedFile ? (<input type="file"
                         onChange = {
                             this.onFileChange
                         }
                         />) : (<button onClick={this.deleteImage}>
-                        Clear < /button>)}   <
-                        /div>
+                        Clear Background Image </button>)}  
+          </div>
                     )
                 }
-            }
+  }
 
-            export default VirtualB;
+export default VirtualB;
