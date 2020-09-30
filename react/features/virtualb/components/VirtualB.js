@@ -4,8 +4,9 @@ import React, {
 
 import type { AbstractButtonProps } from '../../base/toolbox/components';
 import { AbstractButton, BetaTag } from '../../base/toolbox/components';
-
 import { virtualBDisabled, virtualBEnabled } from '../action';
+import { translate } from '../../base/i18n';
+import { connect } from '../../base/redux';
 
 type Props = AbstractButtonProps & {
   /**
@@ -111,6 +112,7 @@ class VirtualB extends AbstractButton<Props, *> {
           </div>
                     )
                 }
-  }
+}
+  
 
-export default VirtualB;
+export default translate(connect(_mapStateToProps)(VirtualB));
