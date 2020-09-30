@@ -10,21 +10,37 @@ class VirtualB extends Component {
   componentDidMount() {
       
     if (localStorage.getItem("backgroundImage")) {
+      var dataImage = localStorage.getItem('backgroundImage');
       this.setState({
-        localImageUrl : URL.createObjectURL(localStorage.getItem("backgroundImage"))
-      })
+        localImageUrl: "data:image/png;base64," + dataImage
+      });
       }
-    }
+  }
+  
+   getBase64Image = (img) => {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    var dataURL = canvas.toDataURL("image/png");
+
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
 
     // On file select (from the pop up) 
     onFileChange = event => {
 
         // Update the state 
+        let imgData = getBase64Image(event.target.files[0]);
+      localStorage.setItem("backgroundImage", imgData);
+      
+      var dataImage = localStorage.getItem('backgroundImage');
         this.setState({
-          localImageUrl: URL.createObjectURL(event.target.files[0])
+          localImageUrl: "data:image/png;base64," + dataImage
         });
-        localStorage.setItem('backgroundImage', event.target.files[0]);
-
     };
 
     // On file upload (click the upload button) 
