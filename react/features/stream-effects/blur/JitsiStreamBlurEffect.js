@@ -181,7 +181,9 @@ export default class JitsiStreamBlurEffect {
         );
 
         if (segmentation) {
-            if (!this.imageData && this.blur) {
+
+            console.log('imagedata', this.imageData, ' blur ', this.blur);
+            if (!localStorage.getItem('backgroundImage') && this.blur) {
 
                 const blurData = new ImageData(liveData.data.slice(),
                     liveData.width, liveData.height);
