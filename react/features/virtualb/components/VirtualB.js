@@ -79,7 +79,7 @@ class VirtualB extends AbstractButton<Props, *> {
           });
         
         if (this.state.localImageUrl) {
-          dispatch(virtualBEnabled());
+          this.props.dispatch(virtualBEnabled());
         }
       });
     
@@ -93,7 +93,7 @@ class VirtualB extends AbstractButton<Props, *> {
     deleteImage = () => {
       localStorage.removeItem("backgroundImage");
       this.setState({ localImageUrl: null });
-      dispatch(virtualBDisabled());
+      this.props.dispatch(virtualBDisabled());
     };
 
     render() {
