@@ -68,7 +68,7 @@ class VirtualB extends Component {
           });
         
         if (this.state.localImageUrl) {
-          dispatchEvent(virtualBEnabled());
+          dispatch(virtualBEnabled());
         }
       });
     
@@ -82,7 +82,7 @@ class VirtualB extends Component {
     deleteImage = () => {
       localStorage.removeItem("backgroundImage");
       this.setState({ localImageUrl: null });
-      dispatchEvent(virtualBDisabled());
+      dispatch(virtualBDisabled());
     };
 
     render() {
