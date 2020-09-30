@@ -46,7 +46,7 @@ class VirtualB extends Component {
     // On file select (from the pop up) 
   onFileChange = event => {
 
-       const file = e.target.files[0];
+       const file = event.target.files[0];
       this.getBase64(file).then(base64 => {
             localStorage["backgroundImage"] = base64;
             console.debug("file stored", base64);
