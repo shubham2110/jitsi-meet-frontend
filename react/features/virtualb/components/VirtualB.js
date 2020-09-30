@@ -34,14 +34,14 @@ class VirtualB extends Component {
 
     render() {
       return (
-        <React.Fragment> {
+        <div> {
                     (!this.state.selectedFile ? <input value="Virtual Background" type="file"
                         onChange = {
                             this.onFileChange
                         }
                         /> : <button onClick={this.deleteImage}>
                         Clear </button>)}  
-          </React.Fragment>
+          </div>
                     )
                 }
   }
