@@ -79,7 +79,12 @@ class VirtualB extends AbstractButton<Props, *> {
                localImageUrl:  true
           });
         
+        
+        console.log('this.state.localImageUrl', this.state.localImageUrl);
+        
+        console.log(' props', this.props);
         if (this.state.localImageUrl) {
+
           this.props.dispatch(virtualBEnabled());
         }
       });
