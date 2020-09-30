@@ -24,7 +24,7 @@ class VirtualB extends Component {
       reader.onload = () => resolve(reader.result);
       reader.onerror = error => reject(error);
       reader.readAsDataURL(file);
-    };
+    });
   }
 
 
