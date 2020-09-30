@@ -71,7 +71,7 @@ export default class JitsiStreamBlurEffect {
         var htmlimg = new Image();
         htmlimg.setAttribute('crossOrigin', 'anonymous');
         var dataImage = localStorage.getItem('backgroundImage');
-        htmlimg.src =  dataImage;
+        htmlimg.src = dataImage;
         // htmlimg.src = 'https://ioc.instantconnect.in/static/background.jpg';
         return htmlimg;
         // return document.createElement("img", {
@@ -85,12 +85,10 @@ export default class JitsiStreamBlurEffect {
         this.stream = stream;
 
         this.blur = blur;
+        if (localStorage.getItem('backgroundImage')) {
+            image = this.imageElement();
+        }
 
-
-        console.log(" image before", image);
-        image = this.imageElement();
-
-        console.log(" image after", image);
 
 
         this.tmpVideo.addEventListener('loadedmetadata', () => {
@@ -183,9 +181,7 @@ export default class JitsiStreamBlurEffect {
         );
 
         if (segmentation) {
-            console.log(' blur in processSeg', this.blur);
-            this.blur = false;
-            if (this.blur) {
+            if (!this.imageData && this.blur) {
 
                 const blurData = new ImageData(liveData.data.slice(),
                     liveData.width, liveData.height);
@@ -209,7 +205,6 @@ export default class JitsiStreamBlurEffect {
                 }
             }
 
-            console.log('imageData in processSeg', this.imageData);
             if (this.imageData) {
                 const dataL = liveData.data;
                 const imageData = this.imageData;
@@ -335,8 +330,8 @@ export default class JitsiStreamBlurEffect {
         this.imageData = ctx.getImageData(0, 0, canvas.width, canvas
             .height);
 
-        console.log('imageData', this.imageData);
-        
+        // console.log('imageData', this.imageData);
+
     }
 
     /**
