@@ -2,9 +2,19 @@ import React, {
     Component
 } from 'react';
 
+import type { AbstractButtonProps } from '../../base/toolbox/components';
+
 import { virtualBDisabled, virtualBEnabled } from '../action';
 
-class VirtualB extends Component {
+type Props = AbstractButtonProps & {
+  /**
+   * The redux {@code dispatch} function.
+   */
+  dispatch: Function
+
+};
+
+class VirtualB extends AbstractButton<Props, *> {
     state = {
       localImageUrl: false
     };
