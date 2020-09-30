@@ -71,7 +71,7 @@ export default class JitsiStreamBlurEffect {
         var htmlimg = new Image();
         htmlimg.setAttribute('crossOrigin', 'anonymous');
         var dataImage = localStorage.getItem('backgroundImage');
-        htmlimg.src = "data:image/png;base64," + dataImage;
+        htmlimg.src =  dataImage;
         // htmlimg.src = 'https://ioc.instantconnect.in/static/background.jpg';
         return htmlimg;
         // return document.createElement("img", {
