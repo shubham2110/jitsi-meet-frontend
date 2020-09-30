@@ -34,6 +34,7 @@ import { connect, equals } from '../../../base/redux';
 import { OverflowMenuItem } from '../../../base/toolbox/components';
 import { getLocalVideoTrack, toggleScreensharing } from '../../../base/tracks';
 import { VideoBlurButton } from '../../../blur';
+import { VirtualB } from '../../../virtualb';
 import { CHAT_SIZE, ChatCounter, toggleChat } from '../../../chat';
 import { EmbedMeetingDialog } from '../../../embed-meeting';
 import { SharedDocumentButton } from '../../../etherpad';
@@ -1030,6 +1031,10 @@ class Toolbox extends Component<Props, State> {
                     showLabel = { true } />,
             <VideoBlurButton
                 key = 'videobackgroundblur'
+                showLabel = { true }
+                visible = { this._shouldShowButton('videobackgroundblur') && !_screensharing } />,
+            <VirtualB
+                key = 'virtualb'
                 showLabel = { true }
                 visible = { this._shouldShowButton('videobackgroundblur') && !_screensharing } />,
             <SettingsButton
