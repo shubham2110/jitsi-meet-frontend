@@ -64,21 +64,47 @@ export default class JitsiStreamBlurEffect {
      * @param {HTMLImageElement | undefined} image - Used for virtual background/background replacement.
      * @returns {MediaStream} - The stream with the applied effect.
      */
-    startEffect(stream: MediaStream, blur: boolean = true, image?: HTMLImageElement) {
+
+
+    imageElement = () => {
+        // Import result is the URL of your image
+        var htmlimg = new Image();
+        htmlimg.setAttribute('crossOrigin', 'anonymous');
+        var dataImage = localStorage.getItem('backgroundImage');
+        htmlimg.src = "data:image/png;base64," + dataImage;
+        // htmlimg.src = 'https://ioc.instantconnect.in/static/background.jpg';
+        return htmlimg;
+        // return document.createElement("img", {
+        //     src: 'https://wallpapercave.com/wp/wp1848525.jpg',
+        //     // any other image attributes you need go here
+        // }, null);
+    }
+
+    startEffect(stream: MediaStream, blur: boolean = true, image ? :
+        HTMLImageElement) {
         this.stream = stream;
 
         this.blur = blur;
+
+
+        console.log(" image before", image);
+        image = this.imageElement();
+
+        console.log(" image after", image);
+
 
         this.tmpVideo.addEventListener('loadedmetadata', () => {
             this.setNewSettings(blur, image);
             this.finalCanvas.width = this.tmpVideo.videoWidth;
             this.finalCanvas.height = this.tmpVideo.videoHeight;
             this.videoRenderCanvas.width = this.tmpVideo.videoWidth;
-            this.videoRenderCanvas.height = this.tmpVideo.videoHeight;
+            this.videoRenderCanvas.height = this.tmpVideo
+                .videoHeight;
             this.bodyPixCanvas.width = this.tmpVideo.videoWidth;
             this.bodyPixCanvas.height = this.tmpVideo.videoHeight;
 
-            const finalCanvasCtx = this.finalCanvas.getContext('2d');
+            const finalCanvasCtx = this.finalCanvas.getContext(
+                '2d');
 
             finalCanvasCtx.drawImage(this.tmpVideo, 0, 0);
         });
@@ -114,7 +140,8 @@ export default class JitsiStreamBlurEffect {
      * false otherwise.
      */
     isEnabled(jitsiLocalTrack: Object) {
-        return jitsiLocalTrack.isVideoTrack() && jitsiLocalTrack.videoType === 'camera';
+        return jitsiLocalTrack.isVideoTrack() && jitsiLocalTrack
+            .videoType === 'camera';
     }
 
 
@@ -127,7 +154,8 @@ export default class JitsiStreamBlurEffect {
         this.videoRenderCanvasCtx.drawImage(this.tmpVideo, 0, 0);
         if (this.previousSegmentationComplete) {
             this.previousSegmentationComplete = false;
-            this.bpModel.segmentPerson(this.videoRenderCanvas, segmentationProperties).then(segmentation => {
+            this.bpModel.segmentPerson(this.videoRenderCanvas,
+                segmentationProperties).then(segmentation => {
                 this.lastSegmentation = segmentation;
                 this.previousSegmentationComplete = true;
             });
@@ -144,7 +172,8 @@ export default class JitsiStreamBlurEffect {
      * @param {bodyPix.SemanticPersonSegmentation | null} segmentation - Segmentation data.
      * @returns {void}
      */
-    processSegmentation(segmentation: bodyPix.SemanticPersonSegmentation | null) {
+    processSegmentation(segmentation: bodyPix.SemanticPersonSegmentation |
+        null) {
         const ctx = this.finalCanvas.getContext('2d');
         const liveData = this.videoRenderCanvasCtx.getImageData(
             0,
@@ -154,10 +183,15 @@ export default class JitsiStreamBlurEffect {
         );
 
         if (segmentation) {
+            console.log(' blur in processSeg', this.blur);
+            this.blur = false;
             if (this.blur) {
-                const blurData = new ImageData(liveData.data.slice(), liveData.width, liveData.height);
 
-                StackBlur.imageDataRGB(blurData, 0, 0, liveData.width, liveData.height, 12);
+                const blurData = new ImageData(liveData.data.slice(),
+                    liveData.width, liveData.height);
+
+                StackBlur.imageDataRGB(blurData, 0, 0, liveData.width,
+                    liveData.height, 12);
                 const dataL = liveData.data;
 
                 for (let x = 0; x < this.finalCanvas.width; x++) {
@@ -174,6 +208,8 @@ export default class JitsiStreamBlurEffect {
                     }
                 }
             }
+
+            console.log('imageData in processSeg', this.imageData);
             if (this.imageData) {
                 const dataL = liveData.data;
                 const imageData = this.imageData;
@@ -185,9 +221,12 @@ export default class JitsiStreamBlurEffect {
                         // eslint-disable-next-line max-depth
                         if (segmentation.data[n] === 0) {
                             dataL[n * 4] = this.imageData.data[n * 4];
-                            dataL[(n * 4) + 1] = imageData.data[(n * 4) + 1];
-                            dataL[(n * 4) + 2] = imageData.data[(n * 4) + 2];
-                            dataL[(n * 4) + 3] = imageData.data[(n * 4) + 3];
+                            dataL[(n * 4) + 1] = imageData.data[(n * 4) +
+                                1];
+                            dataL[(n * 4) + 2] = imageData.data[(n * 4) +
+                                2];
+                            dataL[(n * 4) + 3] = imageData.data[(n * 4) +
+                                3];
                         }
                     }
                 }
@@ -203,9 +242,14 @@ export default class JitsiStreamBlurEffect {
      * @param {HTMLImageElement | undefined} image - Used for virtual background/background replacement.
      * @returns {void}
      */
-    setNewSettings(blur: boolean, image?: HTMLImageElement) {
+    setNewSettings(blur: boolean, image ? : HTMLImageElement) {
+
+        blur = false;
+        console.log(" blur", blur, ' image', image);
         if (blur && image) {
-            throw new Error('I can\'t blur and replace image...well I can...but that would be stupid.');
+            throw new Error(
+                'I can\'t blur and replace image...well I can...but that would be stupid.'
+            );
         }
         this.blur = blur;
         if (image) {
@@ -222,6 +266,8 @@ export default class JitsiStreamBlurEffect {
      * @returns {void}
      */
     generateImageData(img: HTMLImageElement) {
+
+        console.log("inside generator");
         /**
          * https://stackoverflow.com/a/21961894/7886229
          * By Ken Fyrstenberg Nilsen
@@ -245,10 +291,12 @@ export default class JitsiStreamBlurEffect {
 
         const iw = img.width;
         const ih = img.height;
+        console.log(' image width', iw, ' image height', ih);
         const r = Math.min(w / iw, h / ih);
         let nw = iw * r; // new prop. width
         let nh = ih * r; // new prop. height
-        let ar = 1, ch, cw, cx, cy;
+        let ar = 1,
+            ch, cw, cx, cy;
 
         // decide which gap to fill
         if (nw < w) {
@@ -284,7 +332,11 @@ export default class JitsiStreamBlurEffect {
         // fill image in dest. rectangle
         ctx.drawImage(img, cx, cy, cw, ch, x, y, w, h);
 
-        this.imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        this.imageData = ctx.getImageData(0, 0, canvas.width, canvas
+            .height);
+
+        console.log('imageData', this.imageData);
+        
     }
 
     /**
