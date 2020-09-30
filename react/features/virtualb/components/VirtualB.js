@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 
 import type { AbstractButtonProps } from '../../base/toolbox/components';
+import { AbstractButton, BetaTag } from '../../base/toolbox/components';
 
 import { virtualBDisabled, virtualBEnabled } from '../action';
 
