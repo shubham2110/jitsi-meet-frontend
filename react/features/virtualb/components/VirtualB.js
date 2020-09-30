@@ -20,7 +20,7 @@ class VirtualB extends Component {
 
         // Update the state 
         this.setState({
-            selectedFile: event.target.files[0]
+            selectedFile: URL.createObjectURL(event.target.files[0]
         });
 
     };
