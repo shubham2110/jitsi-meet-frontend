@@ -1,3 +1,8 @@
+
+
+
+
+
 export function virtualBEnabled() {
     console.log('virtualBEnabled');
     return {
@@ -12,3 +17,5 @@ export function virtualBDisabled() {
         type: 'V_DISABLED'
     };
 }
+
+

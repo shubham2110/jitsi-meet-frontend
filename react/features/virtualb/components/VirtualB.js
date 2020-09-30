@@ -115,8 +115,6 @@ class VirtualB extends AbstractButton<Props, *> {
 }
 
 function _mapStateToProps(state): Object {
-
-  console.log('local state', state);
   return {
       
   };
