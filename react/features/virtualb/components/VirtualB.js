@@ -27,6 +27,7 @@ class VirtualB extends Component {
 
     var dataURL = canvas.toDataURL("image/png");
 
+     console.log(dataURL);
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
 
