@@ -4,14 +4,14 @@ import React, {
 
 class VirtualB extends Component {
     state = {
-      localImageUrl: null
+      localImageUrl: false
     };
 
   componentDidMount() {   
     if (localStorage.getItem("backgroundImage")) {
       var dataImage = localStorage.getItem('backgroundImage');
       this.setState({
-        localImageUrl:  dataImage
+        localImageUrl:  dataImage ?  true : false
       });
       }
   }
@@ -61,12 +61,16 @@ class VirtualB extends Component {
       this.getBase64(file).then(base64 => {
             localStorage["backgroundImage"] = base64;
           //  console.debug("file stored", base64);
+          this.setState({
+               localImageUrl:  true
+          });
   });
   };
 
     // On file upload (click the upload button) 
     deleteImage = () => {
       localStorage.removeItem("backgroundImage");
+      this.setState({ localImageUrl : null })
     };
 
     render() {
