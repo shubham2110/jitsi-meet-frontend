@@ -4,15 +4,16 @@ import React, {
 
 class VirtualB extends Component {
     state = {
-
-        // Initially, no file is selected 
-        selectedFile: null
+      localImageUrl: null
     };
 
-    componentDidMount() {
-        this.setState({
-            selectedFile : localStorage.getItem("backgroundImage")
-        })
+  componentDidMount() {
+      
+    if (localStorage.getItem("backgroundImage")) {
+      this.setState({
+        localImageUrl : URL.createObjectURL(localStorage.getItem("backgroundImage"))
+      })
+      }
     }
 
     // On file select (from the pop up) 
@@ -20,8 +21,9 @@ class VirtualB extends Component {
 
         // Update the state 
         this.setState({
-            selectedFile: URL.createObjectURL(event.target.files[0])
+          localImageUrl: URL.createObjectURL(event.target.files[0])
         });
+        localStorage.setItem('backgroundImage', event.target.files[0]);
 
     };
 
@@ -33,12 +35,15 @@ class VirtualB extends Component {
     render() {
       return (
         <div> {
-                  !this.state.selectedFile ? (<input type="file"
+                  !this.state.localImageUrl ? (<input type="file"
                         onChange = {
                             this.onFileChange
                         }
-                        />) : (<button onClick={this.deleteImage}>
-                        Clear Background Image </button>)}  
+          />) : (<div>
+              <img src={this.state.localImageUrl} />
+            <button onClick={this.deleteImage}>
+                Clear Background Image </button>
+                        </div>)}  
           </div>
                     )
                 }
