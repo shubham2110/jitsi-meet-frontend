@@ -106,7 +106,7 @@ class VirtualB extends AbstractButton<Props, *> {
                         }
           />) : (<div>
 
-            <button onClick={this.deleteImage}>
+            <button onClick={this.deleteImage} style={{marginLeft:15}}>
                 Clear Background Image </button>
                         </div>)}  
           </div>
