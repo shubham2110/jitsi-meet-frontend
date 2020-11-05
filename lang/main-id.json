@@ -288,7 +288,7 @@
         "statusMessage": "is now {{status}}"
     },
     "documentSharing": {
-        "title": "Shared Document"
+        "title": "Whiteboard"
     },
     "feedback": {
         "average": "Average",
@@ -593,7 +593,7 @@
             "callQuality": "Manage video quality",
             "cc": "Toggle subtitles",
             "chat": "Toggle chat window",
-            "document": "Toggle shared document",
+            "document": "Toggle Whiteboard",
             "download": "Download our apps",
             "feedback": "Leave feedback",
             "fullScreen": "Toggle full screen",
@@ -635,8 +635,8 @@
         "callQuality": "Manage video quality",
         "chat": "Open / Close chat",
         "closeChat": "Close chat",
-        "documentClose": "Close shared document",
-        "documentOpen": "Open shared document",
+        "documentClose": "Close Whiteboard",
+        "documentOpen": "Open Whiteboard",
         "download": "Download our apps",
         "enterFullScreen": "View full screen",
         "enterTileView": "Enter tile view",
