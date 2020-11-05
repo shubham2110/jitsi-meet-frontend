@@ -34,6 +34,7 @@ import { connect, equals } from '../../../base/redux';
 import { OverflowMenuItem } from '../../../base/toolbox/components';
 import { getLocalVideoTrack, toggleScreensharing } from '../../../base/tracks';
 import { VideoBlurButton } from '../../../blur';
+import { VirtualB } from '../../../virtualb';
 import { CHAT_SIZE, ChatCounter, toggleChat } from '../../../chat';
 import { EmbedMeetingDialog } from '../../../embed-meeting';
 import { SharedDocumentButton } from '../../../etherpad';
@@ -73,6 +74,7 @@ import {
     setOverflowMenuVisible,
     setToolbarHovered
 } from '../../actions';
+
 import { isToolboxVisible } from '../../functions';
 import DownloadButton from '../DownloadButton';
 import HangupButton from '../HangupButton';
@@ -317,6 +319,7 @@ class Toolbox extends Component<Props, State> {
      */
     componentDidUpdate(prevProps) {
         // Ensure the dialog is closed when the toolbox becomes hidden.
+        // console.log('this.props._visible', this.props._visible, 'prevProps._overflowMenuVisible', prevProps._overflowMenuVisible);
         if (prevProps._overflowMenuVisible && !this.props._visible) {
             this._onSetOverflowVisible(false);
         }
@@ -528,7 +531,9 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
     _onMouseOut() {
-        this.props.dispatch(setToolbarHovered(false));
+        setTimeout(() => {
+            this.props.dispatch(setToolbarHovered(false));
+        }, 10000);
     }
 
     _onMouseOver: () => void;
@@ -1033,9 +1038,9 @@ class Toolbox extends Component<Props, State> {
                 showLabel = { true }
                 visible = { this._shouldShowButton('videobackgroundblur') && !_screensharing } />,
             <VirtualB
-                key='virtualb'
-                showLabel={true}
-                visible={this._shouldShowButton('videobackgroundblur') && !_screensharing} />,
+                key = 'virtualb'
+                showLabel = { true }
+                visible = { this._shouldShowButton('videobackgroundblur') && !_screensharing } />,
             <SettingsButton
                 key = 'settings'
                 showLabel = { true }

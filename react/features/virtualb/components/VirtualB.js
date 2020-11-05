@@ -1,94 +1,125 @@
-// @flow
+import React, {
+    Component
+} from 'react';
 
-import type { Dispatch } from 'redux';
-
-import { createToolbarEvent, sendAnalytics } from '../../analytics';
+import type { AbstractButtonProps } from '../../base/toolbox/components';
+import { AbstractButton, BetaTag } from '../../base/toolbox/components';
+import { virtualBDisabled, virtualBEnabled } from '../action';
 import { translate } from '../../base/i18n';
 import { connect } from '../../base/redux';
-import { IconShareDoc } from '../../base/icons';
-import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
-import { toggleVirtualBffect } from '../actions';
 
 type Props = AbstractButtonProps & {
+  /**
+   * The redux {@code dispatch} function.
+   */
+  dispatch: Function
 
-    /**
-     * Whether the shared document is being edited or not.
-     */
-    _virtualbEnabled: boolean,
-
-    /**
-     * Redux dispatch function.
-     */
-    dispatch: Dispatch<any>,
 };
 
-/**
- * Implements an {@link AbstractButton} to open the chat screen on mobile.
- */
 class VirtualB extends AbstractButton<Props, *> {
-    accessibilityLabel = 'Enable Virtual Background';
-    icon = IconShareDoc;
-    label = 'Virtual background';
-    toggledLabel = 'Virtual Background';
-
-    /**
-  * Helper function to be implemented by subclasses, which returns
-  * a React Element to display (a beta tag) at the end of the button.
-  *
-  * @override
-  * @protected
-  * @returns {ReactElement}
-  */
-    _getElementAfter() {
-        return <BetaTag />;
-    }
-
-
-
-    /**
-     * Handles clicking / pressing the button, and opens / closes the appropriate dialog.
-     *
-     * @private
-     * @returns {void}
-     */
-    _handleClick() {
-        console.log("Button Clicked Virtual B");
-
-
-
-    }
-
-    /**
-     * Indicates whether this button is in toggled state or not.
-     *
-     * @override
-     * @protected
-     * @returns {boolean}
-     */
-    _isToggled() {
-        return this.props._virtualbEnabled;
-    }
-}
-
-
-/**
- * Maps part of the redux state to the component's props.
- *
- * @param {Object} state - The redux store/state.
- * @param {Object} ownProps - The properties explicitly passed to the component
- * instance.
- * @returns {Object}
- */
-function _mapStateToProps(state: Object, ownProps: Object) {
-    // const { documentUrl, editing } = state['features/etherpad'];
-    // const { visible = Boolean(documentUrl) } = ownProps;
-
-    return {
-        _virtualbEnabled: true
-
-        //Boolean(state['features/virtualb'].virtualbEnabled)
+    state = {
+      localImageUrl: false
     };
+
+  componentDidMount() {   
+    if (localStorage.getItem("backgroundImage")) {
+      var dataImage = localStorage.getItem('backgroundImage');
+      this.setState({
+        localImageUrl:  dataImage ?  true : false
+      });
+      }
+  }
+  
+  getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+
+/*
+   getBase64Image = (img) => {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    // var ctx = canvas.getContext("2d");
+    // ctx.drawImage(img, 0, 0);
+
+    var dataURL = canvas.toDataURL("image/png");
+
+     console.log(dataURL);
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+*/
+
+    // On file select (from the pop up) 
+  onFileChange = event => {
+    // Update the state 
+      /*
+        let imgData = this.getBase64Image(event.target.files[0]);
+      localStorage.setItem("backgroundImage", imgData);
+      
+      var dataImage = localStorage.getItem('backgroundImage');
+      let dataurl = "data:image/png;base64," + dataImage;
+      console.log('imageDtata', dataurl)
+        this.setState({
+          localImageUrl: dataurl
+        });
+        */
+    
+       const file = event.target.files[0];
+      this.getBase64(file).then(base64 => {
+            localStorage["backgroundImage"] = base64;
+          //  console.debug("file stored", base64);
+          this.setState({
+               localImageUrl:  true
+          });
+        if (this.state.localImageUrl) {
+
+          this.props.dispatch(virtualBEnabled());
+        }
+      });
+    
+
+    
+  };
+
+  
+
+    // On file upload (click the upload button) 
+    deleteImage = () => {
+      localStorage.removeItem("backgroundImage");
+      this.setState({ localImageUrl: null });
+      this.props.dispatch(virtualBDisabled());
+    };
+
+    render() {
+      return (
+        <div> {
+                  !this.state.localImageUrl ? (<input style={{marginLeft:15}} type="file"
+                        onChange = {
+                            this.onFileChange
+                        }
+          />) : (<div>
+
+            <button onClick={this.deleteImage} style={{marginLeft:15}}>
+                Clear Background Image </button>
+                        </div>)}  
+          </div>
+                    )
+                }
 }
 
-export default connect(_mapStateToProps)(VirtualB);
+function _mapStateToProps(state): Object {
+  return {
+      
+  };
+}
 
+  
+
+export default translate(connect(_mapStateToProps)(VirtualB));

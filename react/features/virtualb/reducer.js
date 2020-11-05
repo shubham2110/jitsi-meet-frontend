@@ -1,21 +1,20 @@
-// @flow
+import {
+    ReducerRegistry
+} from '../base/redux';
 
-import { ReducerRegistry } from "../base/redux";
 
-import { VIRTUALB_ENABLED, VIRTUALB_DISABLED } from "./actionTypes";
-
-ReducerRegistry.register("features/virtualb", (state = {}, action) => {
+ReducerRegistry.register('features/virtualB', (state = {}, action) => {
     switch (action.type) {
-        case VIRTUALB_ENABLED: {
+        case 'V_ENABLED': {
             return {
                 ...state,
-                virtualbEnabled: true,
+                virtualB: true
             };
         }
-        case VIRTUALB_DISABLED: {
+        case 'V_DISABLED': {
             return {
                 ...state,
-                virtualbEnabled: false,
+                virtualB: false
             };
         }
     }

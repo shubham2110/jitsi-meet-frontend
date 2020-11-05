@@ -91,7 +91,7 @@ deploy-local:
 
 .NOTPARALLEL:
 dev: deploy-init deploy-css deploy-rnnoise-binary deploy-lib-jitsi-meet deploy-libflac deploy-olm
-	$(WEBPACK_DEV_SERVER) --detect-circular-deps
+	$(WEBPACK_DEV_SERVER) --detect-circular-deps  --cert /etc/letsencrypt/live/ioc.instantconnect.in/fullchain.pem --key /etc/letsencrypt/live/ioc.instantconnect.in/privkey.pem
 
 source-package:
 	mkdir -p source_package/jitsi-meet/css && \
