@@ -1,3 +1,4 @@
+import { jitsiLocalStorage } from '@jitsi/js-utils/jitsi-local-storage';
 import EventEmitter from 'events';
 
 import { urlObjectToString } from '../../../react/features/base/util/uri';
@@ -39,6 +40,8 @@ const commands = {
     hangup: 'video-hangup',
     muteEveryone: 'mute-everyone',
     password: 'password',
+    pinParticipant: 'pin-participant',
+    resizeLargeVideo: 'resize-large-video',
     sendEndpointTextMessage: 'send-endpoint-text-message',
     sendTones: 'send-tones',
     setLargeVideoParticipant: 'set-large-video-participant',
@@ -270,6 +273,7 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             userInfo,
             e2eeKey
         } = parseArguments(args);
+        const localStorageContent = jitsiLocalStorage.getItem('jitsiLocalStorage');
 
         this._parentNode = parentNode;
         this._url = generateURL(domain, {
@@ -279,7 +283,10 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             noSSL,
             roomName,
             devices,
-            userInfo
+            userInfo,
+            appData: {
+                localStorageContent
+            }
         });
         this._createIFrame(height, width, onload);
         this._transport = new Transport({
@@ -441,10 +448,12 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         const parsedWidth = parseSizeParam(width);
 
         if (parsedHeight !== undefined) {
+            this._height = height;
             this._frame.style.height = parsedHeight;
         }
 
         if (parsedWidth !== undefined) {
+            this._width = width;
             this._frame.style.width = parsedWidth;
         }
     }
@@ -526,6 +535,11 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             case 'video-quality-changed':
                 this._videoQuality = data.videoQuality;
                 break;
+            case 'local-storage-changed':
+                jitsiLocalStorage.setItem('jitsiLocalStorage', data.localStorageContent);
+
+                // Since this is internal event we don't need to emit it to the consumer of the API.
+                return true;
             }
 
             const eventName = events[name];
@@ -635,6 +649,18 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
         for (const event in listeners) { // eslint-disable-line guard-for-in
             this.addEventListener(event, listeners[event]);
         }
+    }
+
+    /**
+     * Captures the screenshot of the large video.
+     *
+     * @returns {Promise<string>} - Resolves with a base64 encoded image data of the screenshot
+     * if large video is detected, an error otherwise.
+     */
+    captureLargeVideoScreenshot() {
+        return this._transport.sendRequest({
+            name: 'capture-largevideo-screenshot'
+        });
     }
 
     /**
@@ -909,6 +935,17 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
     }
 
     /**
+     * Pins a participant's video on to the stage view.
+     *
+     * @param {string} participantId - Participant id (JID) of the participant
+     * that needs to be pinned on the stage view.
+     * @returns {void}
+     */
+    pinParticipant(participantId) {
+        this.executeCommand('pinParticipant', participantId);
+    }
+
+    /**
      * Removes event listener.
      *
      * @param {string} event - The name of the event.
@@ -932,6 +969,19 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     removeEventListeners(eventList) {
         eventList.forEach(event => this.removeEventListener(event));
+    }
+
+    /**
+     * Resizes the large video container as per the dimensions provided.
+     *
+     * @param {number} width - Width that needs to be applied on the large video container.
+     * @param {number} height - Height that needs to be applied on the large video container.
+     * @returns {void}
+     */
+    resizeLargeVideo(width, height) {
+        if (width <= this._width && height <= this._height) {
+            this.executeCommand('resizeLargeVideo', width, height);
+        }
     }
 
     /**
@@ -999,6 +1049,39 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     setVideoInputDevice(label, deviceId) {
         return setVideoInputDevice(this._transport, label, deviceId);
+    }
+
+    /**
+     * Starts a file recording or streaming session depending on the passed on params.
+     * For RTMP streams, `rtmpStreamKey` must be passed on. `rtmpBroadcastID` is optional.
+     * For youtube streams, `youtubeStreamKey` must be passed on. `youtubeBroadcastID` is optional.
+     * For dropbox recording, recording `mode` should be `file` and a dropbox oauth2 token must be provided.
+     * For file recording, recording `mode` should be `file` and optionally `shouldShare` could be passed on.
+     * No other params should be passed.
+     *
+     * @param {Object} options - An object with config options to pass along.
+     * @param { string } options.mode - Recording mode, either `file` or `stream`.
+     * @param { string } options.dropboxToken - Dropbox oauth2 token.
+     * @param { boolean } options.shouldShare - Whether the recording should be shared with the participants or not.
+     * Only applies to certain jitsi meet deploys.
+     * @param { string } options.rtmpStreamKey - The RTMP stream key.
+     * @param { string } options.rtmpBroadcastID - The RTMP broacast ID.
+     * @param { string } options.youtubeStreamKey - The youtube stream key.
+     * @param { string } options.youtubeBroadcastID - The youtube broacast ID.
+     * @returns {void}
+     */
+    startRecording(options) {
+        this.executeCommand('startRecording', options);
+    }
+
+    /**
+     * Stops a recording or streaming session that is in progress.
+     *
+     * @param {string} mode - `file` or `stream`.
+     * @returns {void}
+     */
+    stopRecording(mode) {
+        this.executeCommand('startRecording', mode);
     }
 
     /**

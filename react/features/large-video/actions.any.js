@@ -17,8 +17,6 @@ import {
     UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION
 } from './actionTypes';
 
-declare var APP: Object;
-
 /**
  * Signals conference to select a participant.
  *
@@ -50,7 +48,7 @@ export function selectParticipant() {
 
 /**
  * Action to select the participant to be displayed in LargeVideo based on the
- * participant id provided. If a partcipant id is not provided, the LargeVideo
+ * participant id provided. If a participant id is not provided, the LargeVideo
  * participant will be selected based on a variety of factors: If there is a
  * dominant or pinned speaker, or if there are remote tracks, etc.
  *

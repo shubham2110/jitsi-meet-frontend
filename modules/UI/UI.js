@@ -356,8 +356,8 @@ UI.askForNickname = function() {
 /**
  * Sets muted audio state for participant
  */
-UI.setAudioMuted = function(id, muted) {
-    VideoLayout.onAudioMute(id, muted);
+UI.setAudioMuted = function(id) {
+    // FIXME: Maybe this can be removed!
     if (APP.conference.isLocalId(id)) {
         APP.conference.updateAudioIconEnabled();
     }
@@ -366,8 +366,8 @@ UI.setAudioMuted = function(id, muted) {
 /**
  * Sets muted video state for participant
  */
-UI.setVideoMuted = function(id, muted) {
-    VideoLayout.onVideoMute(id, muted);
+UI.setVideoMuted = function(id) {
+    VideoLayout.onVideoMute(id);
     if (APP.conference.isLocalId(id)) {
         APP.conference.updateVideoIconEnabled();
     }

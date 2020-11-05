@@ -141,7 +141,14 @@ export default class JitsiStreamPresenterEffect {
             timeMs: 1000 / this._frameRate
         });
 
-        return this._canvas.captureStream(this._frameRate);
+        const capturedStream = this._canvas.captureStream(this._frameRate);
+
+        // Put emphasis on the text details for the presenter's stream
+        // See https://www.w3.org/TR/mst-content-hint/
+        // $FlowExpectedError
+        capturedStream.getVideoTracks()[0].contentHint = 'text';
+
+        return capturedStream;
     }
 
     /**

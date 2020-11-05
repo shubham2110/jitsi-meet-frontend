@@ -25,6 +25,7 @@ import {
     IconShareDesktop,
     IconShareVideo
 } from '../../../base/icons';
+import JitsiMeetJS from '../../../base/lib-jitsi-meet';
 import {
     getLocalParticipant,
     getParticipants,
@@ -33,6 +34,7 @@ import {
 import { connect, equals } from '../../../base/redux';
 import { OverflowMenuItem } from '../../../base/toolbox/components';
 import { getLocalVideoTrack, toggleScreensharing } from '../../../base/tracks';
+import { isVpaasMeeting } from '../../../billing-counter/functions';
 import { VideoBlurButton } from '../../../blur';
 import { CHAT_SIZE, ChatCounter, toggleChat } from '../../../chat';
 import { EmbedMeetingDialog } from '../../../embed-meeting';
@@ -135,6 +137,11 @@ type Props = {
      * Whether or not the current user is logged in through a JWT.
      */
     _isGuest: boolean,
+
+    /**
+     * Whether or not the current meeting belongs to a JaaS user.
+     */
+    _isVpaasMeeting: boolean,
 
     /**
      * The ID of the local participant.
@@ -976,6 +983,15 @@ class Toolbox extends Component<Props, State> {
      *
      * @returns {boolean}
      */
+    _isEmbedMeetingVisible() {
+        return !this.props._isVpaasMeeting && this._shouldShowButton('embedmeeting');
+    }
+
+    /**
+     * Returns true if the profile button is visible and false otherwise.
+     *
+     * @returns {boolean}
+     */
     _isProfileVisible() {
         return this.props._isGuest && this._shouldShowButton('profile');
     }
@@ -1047,7 +1063,7 @@ class Toolbox extends Component<Props, State> {
                     key = 'stats'
                     onClick = { this._onToolbarOpenSpeakerStats }
                     text = { t('toolbar.speakerStats') } />,
-            this._shouldShowButton('embedmeeting')
+            this._isEmbedMeetingVisible()
                 && <OverflowMenuItem
                     accessibilityLabel = { t('toolbar.accessibilityLabel.embedMeeting') }
                     icon = { IconCodeBlock }
@@ -1388,7 +1404,7 @@ class Toolbox extends Component<Props, State> {
  */
 function _mapStateToProps(state) {
     const { conference, locked } = state['features/base/conference'];
-    let { desktopSharingEnabled } = state['features/base/conference'];
+    let desktopSharingEnabled = JitsiMeetJS.isDesktopSharingEnabled();
     const {
         callStatsID,
         enableFeaturesBasedOnToken
@@ -1433,6 +1449,7 @@ function _mapStateToProps(state) {
         _dialog: Boolean(state['features/base/dialog'].component),
         _feedbackConfigured: Boolean(callStatsID),
         _isGuest: state['features/base/jwt'].isGuest,
+        _isVpaasMeeting: isVpaasMeeting(state),
         _fullScreen: fullScreen,
         _tileViewEnabled: shouldDisplayTileView(state),
         _localParticipantID: localParticipant.id,
