@@ -33,6 +33,12 @@ local roomless_iqs = {};
 -- (e.g. from room1@conference.foo.example.com/res returns (room1, example.com, res, foo))
 local function room_jid_split_subdomain(room_jid)
     local node, host, resource = jid.split(room_jid);
+
+    -- optimization, skip matching if there is no subdomain or it is not the muc component address at all
+    if host == muc_domain or not starts_with(host, muc_domain_prefix) then
+        return node, host, resource;
+    end
+
     local target_subdomain = host and host:match(target_subdomain_pattern);
     return node, host, resource, target_subdomain
 end
@@ -80,11 +86,13 @@ local function internal_room_jid_match_rewrite(room_jid, stanza)
 
         return room_jid;
     end
-    local target_subdomain, target_node = node:match("^%[([^%]]+)%](.+)$");
+
+    local target_subdomain, target_node = extract_subdomain(node);
     if not (target_node and target_subdomain) then
         -- module:log("debug", "Not rewriting... unexpected node format: %s", node);
         return room_jid;
     end
+
     -- Ok, rewrite room_jid address to pretty format
     local new_node, new_host, new_resource = target_node, muc_domain_prefix..".".. target_subdomain.."."..muc_domain_base, resource;
     room_jid = jid.join(new_node, new_host, new_resource);
@@ -183,6 +191,7 @@ function update_presence_identity(
 
     stanza:tag("identity"):tag("user");
     for k, v in pairs(user) do
+        v = tostring(v)
         stanza:tag(k):text(v):up();
     end
     stanza:up();
@@ -218,11 +227,22 @@ end
 -- everything.
 function is_feature_allowed(session, feature)
     if (session.jitsi_meet_context_features == nil
-        or session.jitsi_meet_context_features[feature] == "true") then
+        or session.jitsi_meet_context_features[feature] == "true" or session.jitsi_meet_context_features[feature] == true) then
         return true;
     else
         return false;
     end
+end
+
+--- Extracts the subdomain and room name from internal jid node [foo]room1
+-- @return subdomain(optional, if extracted or nil), the room name
+function extract_subdomain(room_node)
+    -- optimization, skip matching if there is no subdomain, no [subdomain] part in the beginning of the node
+    if not starts_with(room_node, '[') then
+        return nil,room_node;
+    end
+
+    return room_node:match("^%[([^%]]+)%](.+)$");
 end
 
 function starts_with(str, start)
@@ -305,6 +325,7 @@ function http_get_with_retry(url, retry)
 end
 
 return {
+    extract_subdomain = extract_subdomain;
     is_feature_allowed = is_feature_allowed;
     is_healthcheck_room = is_healthcheck_room;
     get_room_from_jid = get_room_from_jid;

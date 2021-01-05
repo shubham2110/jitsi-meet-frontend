@@ -7,7 +7,6 @@ import {
     Transport
 } from '../../transport';
 
-import electronPopupsConfig from './electronPopupsConfig.json';
 import {
     getAvailableDevices,
     getCurrentDevices,
@@ -128,16 +127,13 @@ function changeParticipantNumber(APIInstance, number) {
  * configuration options defined in interface_config.js to be overridden.
  * @param {string} [options.jwt] - The JWT token if needed by jitsi-meet for
  * authentication.
- * @param {boolean} [options.noSSL] - If the value is true https won't be used.
  * @param {string} [options.roomName] - The name of the room to join.
  * @returns {string} The URL.
  */
 function generateURL(domain, options = {}) {
     return urlObjectToString({
         ...options,
-        url:
-            `${options.noSSL ? 'http' : 'https'}://${
-                domain}/#jitsi_meet_external_api_id=${id}`
+        url: `https://${domain}/#jitsi_meet_external_api_id=${id}`
     });
 }
 
@@ -168,7 +164,6 @@ function parseArguments(args) {
             parentNode,
             configOverwrite,
             interfaceConfigOverwrite,
-            noSSL,
             jwt,
             onload
         ] = args;
@@ -180,7 +175,6 @@ function parseArguments(args) {
             parentNode,
             configOverwrite,
             interfaceConfigOverwrite,
-            noSSL,
             jwt,
             onload
         };
@@ -241,8 +235,6 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      * configuration options defined in config.js to be overridden.
      * @param {Object} [options.interfaceConfigOverwrite] - Object containing
      * configuration options defined in interface_config.js to be overridden.
-     * @param {boolean} [options.noSSL] - If the value is true https won't be
-     * used.
      * @param {string} [options.jwt] - The JWT token if needed by jitsi-meet for
      * authentication.
      * @param {string} [options.onload] - The onload function that will listen
@@ -265,7 +257,6 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             parentNode = document.body,
             configOverwrite = {},
             interfaceConfigOverwrite = {},
-            noSSL = false,
             jwt = undefined,
             onload = undefined,
             invitees,
@@ -280,7 +271,6 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
             configOverwrite,
             interfaceConfigOverwrite,
             jwt,
-            noSSL,
             roomName,
             devices,
             userInfo,
@@ -1082,17 +1072,5 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     stopRecording(mode) {
         this.executeCommand('startRecording', mode);
-    }
-
-    /**
-     * Returns the configuration for electron for the windows that are open
-     * from Jitsi Meet.
-     *
-     * @returns {Promise<Object>}
-     *
-     * NOTE: For internal use only.
-     */
-    _getElectronPopupsConfig() {
-        return Promise.resolve(electronPopupsConfig);
     }
 }
