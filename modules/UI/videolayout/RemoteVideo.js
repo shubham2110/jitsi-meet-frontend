@@ -47,7 +47,10 @@ function createContainer(spanId) {
         <div class = 'videocontainer__toptoolbar'></div>
         <div class = 'videocontainer__toolbar'></div>
         <div class = 'videocontainer__hoverOverlay'></div>
+        <div class = 'alwaysShowNameContainer'></div>
+<!--
         <div class = 'displayNameContainer'></div>
+-->
         <div class = 'avatar-container'></div>
         <div class ='presence-label-container'></div>
         <span class = 'remotevideomenu'></span>`;
@@ -85,6 +88,7 @@ export default class RemoteVideo extends SmallVideo {
         this.statsPopoverLocation = interfaceConfig.VERTICAL_FILMSTRIP ? 'left bottom' : 'top center';
         this.addRemoteVideoContainer();
         this.updateIndicators();
+	this.updateAlwaysShowName();
         this.updateDisplayName();
         this.bindHoverHandler();
         this.flipX = false;
@@ -431,6 +435,25 @@ export default class RemoteVideo extends SmallVideo {
             this.updateRemoteVideoMenu();
         }
     }
+
+    /**
+     * Triggers re-rendering of the display name using current instance state.
+     *
+     * @returns {void}
+     */
+    updateAlwaysShowName() {
+        if (!this.container) {
+            logger.warn(`Unable to set displayName - ${this.videoSpanId} does not exist`);
+
+            return;
+        }
+
+        this._renderAlwaysShowName({
+            elementID: `${this.videoSpanId}_name`,
+           participantID: this.id
+        });
+    }
+
 
     /**
      * Triggers re-rendering of the display name using current instance state.

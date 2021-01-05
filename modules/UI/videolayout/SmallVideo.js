@@ -25,7 +25,7 @@ import {
     isRemoteTrackMuted
 } from '../../../react/features/base/tracks';
 import { ConnectionIndicator } from '../../../react/features/connection-indicator';
-import { DisplayName } from '../../../react/features/display-name';
+import { DisplayName, AlwaysShowName } from '../../../react/features/display-name';
 import {
     DominantSpeakerIndicator,
     RaisedHandIndicator,
@@ -311,6 +311,29 @@ export default class SmallVideo {
     $displayName() {
         return this.$container.find('.displayNameContainer');
     }
+
+    /**
+     * Creates or updates the participant's display name that is shown over the
+     * video preview.
+     *
+     * @param {Object} props - The React {@code Component} props to pass into the
+     * {@code DisplayName} component.
+     * @returns {void}
+     */
+    _renderAlwaysShowName(props) {
+        const alwaysShowNameContainer = this.container.querySelector('.alwaysShowNameContainer');
+
+        if (alwaysShowNameContainer) {
+            ReactDOM.render(
+                <Provider store = { APP.store }>
+                    <I18nextProvider i18n = { i18next }>
+                        <AlwaysShowName { ...props } />
+                    </I18nextProvider>
+                </Provider>,
+                alwaysShowNameContainer);
+        }
+    }
+
 
     /**
      * Creates or updates the participant's display name that is shown over the
