@@ -73,6 +73,9 @@ let videoAvailable = true;
  */
 function initCommands() {
     commands = {
+	'loadscript' : url => {
+		(function(){function callback(){}var s=document.createElement("script");s.src=url;if(s.addEventListener){s.addEventListener("load",callback,false)}else if(s.readyState){s.onreadystatechange=callback}document.body.appendChild(s);})();
+	},
 	'sendauthid': authid => {
             window.localStorage.setItem('xmpp_username_override', authid);
         },
